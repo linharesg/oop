@@ -91,6 +91,7 @@ class Conta:
             conta_destino.depositar(valor)
             print("Transferência realizada com sucesso.")
 
+    #Método estática é chamado pela Classe. A diferença é que um método normal é chamado pelo objeto
     @staticmethod
     def verifica_numero_conta(numero: str) -> bool:
         """Verificar se o número da conta é válido.
