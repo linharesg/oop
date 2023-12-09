@@ -132,7 +132,7 @@ if __name__ == "__main__":
 
     print(Conta.quantidade_contas)
 
-    if Conta.verifica_numero_conta("123456446"):
+    if Conta.verifica_numero_conta("124956446"):
         print("Número da conta é válido!")
     else:
         print("Número da conta é inválido!")
