@@ -10,34 +10,43 @@ class Agenda:
     contatos = {}
     
     def __str__(self):
-        return f"\n".join(str(contato) for contato in Agenda.contatos.values())
+        return f"{Agenda.contatos}"
 
     def __init__(self):
-        # self.contatos = {}
-        #self.contatos = contatos
         pass
 
     @staticmethod
     def adicionar_pessoa(nome, telefone):
-        if len(Agenda.contatos) > 1:
+        if len(Agenda.contatos) == 10:
             raise MaxContact("Agenda atingiu o limite de 10 contatos")
         
-        contato_id = "contato_" + str(len(Agenda.contatos) + 1)
-        Agenda.contatos[contato_id] = Pessoa(nome, telefone)
+        contato_novo = Pessoa(nome, telefone)
+        Agenda.contatos[contato_novo.nome] = contato_novo.telefone
+        
     
     @staticmethod
     def listar_pessoas():
-         print(Agenda())
+         for nome in Agenda.contatos:
+             print(f"Nome: {nome} | Telefone: {Agenda.contatos[nome]}")
 
     @staticmethod
     def buscar_pessoa(nome_da_pessoa):
-        for i in Agenda.contatos:
-            if Agenda.contatos[i]["nome"] == nome_da_pessoa:
-                print(Agenda.contatos)
+        print(f"Nome: {nome_da_pessoa} | Telefone: {Agenda.contatos[nome_da_pessoa]}")
 
-Agenda.adicionar_pessoa("algue silva", "321123")
-Agenda.adicionar_pessoa("algue silva1", "321123")
+    @staticmethod
+    def remover_pessoa(nome_da_pessoa):
+        Agenda.contatos.pop(nome_da_pessoa)
+        
+
+
+
+Agenda.adicionar_pessoa("gabriel socreppa", "123")
+Agenda.adicionar_pessoa("amanda varela", "321")
 
 Agenda.listar_pessoas()
-print("OI")
-Agenda.buscar_pessoa("contato_2")
+
+Agenda.buscar_pessoa("Gabriel Socreppa")
+
+Agenda.remover_pessoa("Gabriel Socreppa")
+
+Agenda.listar_pessoas()
