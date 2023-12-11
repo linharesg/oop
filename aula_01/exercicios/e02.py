@@ -1,5 +1,5 @@
 from numpy import mean
-
+from typing import List
 class InvalidNameError(Exception):
     """Exceção para nome inválido"""
     pass
@@ -15,12 +15,14 @@ class Aluno:
     """Aluno representa um aluno cadastrado
     
     Attributes:
+        # Na verdade não precisava colocar a Matrícula, porque é um atributo privado.
         matricula (str): Matrícula do aluno.
         nome (str): Nome do aluno.
         notas (list): Notas do aluno
 
     """
-    def __init__(self, matricula: str, nome: str, notas: list):
+    # def __init__(self, matricula: str, nome: str, notas: list):
+    def __init__(self, matricula: str, nome: str, notas: List[float]): # declarado "List[float]" com o uso do import no início do código"
         
         if not matricula.isdigit() or len(matricula) != 8:
             raise InvalidRegistration()
