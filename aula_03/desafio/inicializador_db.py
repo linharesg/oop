@@ -1,7 +1,7 @@
 import sqlite3
+from database_repository import DatabateRepository
 
-
-class DataBaseCreating:
+class DataBaseCreating(DatabateRepository):
     """Classe que inicia o banco de dados, criando as tabelas"""
 
     @staticmethod
@@ -31,10 +31,11 @@ class DataBaseCreating:
             );
 
             CREATE TABLE IF NOT EXISTS pokemon_attacks (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                pokemon_id INTEGER NOT NULL,
-                attack_id INTEGER NOT NULL,
-                UNIQUE (pokemon_id, attack_id)
+                pokemon_id INTEGER,
+                attack_id INTEGER,
+                PRIMARY KEY (pokemon_id, attack_id),
+                FOREIGN KEY (pokemon_id) REFERENCES pokemons(id),
+                FOREIGN KEY (attack_id) REFERENCES attacks(id)
             );
             
             CREATE TABLE IF NOT EXISTS battle_results (
@@ -42,9 +43,15 @@ class DataBaseCreating:
                 pokemon_1_id INTEGER NOT NULL,
                 pokemon_2_id INTEGER NOT NULL,
                 winner INTEGER NOT NULL,
-                timestamp INTEGER NOT NULL
+                timestamp INTEGER NOT NULL,
+                FOREIGN KEY (pokemon_1_id) REFERENCES pokemons(id),
+                FOREIGN KEY (pokemon_2_id) REFERENCES pokemons(id)
             );
             """)
 
         connection.commit()
         connection.close()
+    
+    # 
+    def insert_default_data():
+        pass
