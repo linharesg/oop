@@ -14,22 +14,37 @@ class DataBaseCreating:
 
         connection = sqlite3.connect(db_name)
         cursor = connection.cursor()
-        cursor.execute("""
+        cursor.executescript("""
             CREATE TABLE IF NOT EXISTS pokemons (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 type TEXT NOT NULL,
                 hp INTEGER NOT NULL
             );
-            """)
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS pokemon_atacks (
+            
+            CREATE TABLE IF NOT EXISTS attacks (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                type TEXT NOT NULL,
+                power INT NOT NULL,
+                cooldown INT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS pokemon_attacks (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 pokemon_id INTEGER NOT NULL,
-                name TEXT NOT NULL,
-                power INTEGER NOT NULL,
-                accurace INTEGER NOT NULL
+                attack_id INTEGER NOT NULL,
+                UNIQUE (pokemon_id, attack_id)
             );
-        """)
+            
+            CREATE TABLE IF NOT EXISTS battle_results (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                pokemon_1_id INTEGER NOT NULL,
+                pokemon_2_id INTEGER NOT NULL,
+                winner INTEGER NOT NULL,
+                timestamp INTEGER NOT NULL
+            );
+            """)
+
         connection.commit()
         connection.close()
