@@ -120,3 +120,13 @@ class DataBaseInitialize(DatabateRepository):
                 (20, 9),
                 (21, 9);
             """)
+        
+    def check_database(db_name):
+        connection = sqlite3.connect(db_name)
+        cursor = connection.cursor()
+        cursor.execute("""
+        SELECT MIN(id) FROM pokemons
+        """)
+        row = cursor.fetchone()
+        connection.close
+        return row[0]
