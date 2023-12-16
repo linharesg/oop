@@ -13,7 +13,7 @@ class PokemonRepository():
         self.db_name = db_name
     
     def get_pokemons_list(self) -> List[Pokemon]:
-        """Obtém a ID e o nome de todos os Pokemons"""
+        """Get ID and name of all the pokemons"""
         query = "SELECT id, name FROM pokemons"
         connection = sqlite3.connect(self.db_name)
         cursor = connection.cursor()
@@ -21,4 +21,26 @@ class PokemonRepository():
         rows = cursor.fetchall()
         connection.close()
         return rows
-        
+
+    def get_pokemon_by_id(self, id: int) -> str:
+        "Get the pokemon name by its ID"
+        query = "SELECT name FROM pokemons WHERE id = ?"
+        connection = sqlite3.connect(self.db_name)
+        cursor = connection.cursor()
+        cursor.execute(query, id)
+        pokemon_name = cursor.fetchone()[0]
+        connection.close()
+        return pokemon_name
+
+    def get_pokemon_amount(self):
+        """Get the amount of Pokemon in database"""
+        query = "SELECT COUNT(*) FROM pokemons"
+        connection = sqlite3.connect(self.db_name)
+        cursor = connection.cursor()
+        cursor.execute(query)
+        pokemon_amount = cursor.fetchone()[0]
+        connection.close
+        return pokemon_amount
+
+
+
