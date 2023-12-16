@@ -24,13 +24,13 @@ class PokemonRepository():
 
     def get_pokemon_by_id(self, id: int) -> str:
         "Get the pokemon name by its ID"
-        query = "SELECT name FROM pokemons WHERE id = ?"
+        query = "SELECT * FROM pokemons WHERE id = ?"
         connection = sqlite3.connect(self.db_name)
         cursor = connection.cursor()
         cursor.execute(query, id)
-        pokemon_name = cursor.fetchone()[0]
+        pokemon = cursor.fetchone()
         connection.close()
-        return pokemon_name
+        return pokemon
 
     def get_pokemon_amount(self):
         """Get the amount of Pokemon in database"""

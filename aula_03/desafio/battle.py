@@ -5,3 +5,4 @@ class Battle():
         self.pokemon2 = pokemon2
     
     
+    

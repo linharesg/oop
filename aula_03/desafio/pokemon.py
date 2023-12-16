@@ -10,11 +10,11 @@ class Pokemon(ABC):
         type (str): Pokemon's type.
         hp (int): Pokemon's initial health points
     """
-    def __init__(self, name: str, type: str, hp: int, id: int = None) -> None:
+    def __init__(self, id: int,  name: str, type: str, hp: int) -> None:
+        self.id = id
         self.name = name
         self.type = type
         self.hp = hp
-        self.id = id
     
     def __str__(self):
         return f"ID: {self.id} | Name: {self.name} | Type: {self.type} | HP: {self.hp}"
