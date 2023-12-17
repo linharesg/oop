@@ -1,6 +1,6 @@
 """Pokemon model"""
 from abc import ABC
-
+from typing import List
 class Pokemon(ABC):
     """This class represents a Pokemon
     
@@ -15,6 +15,7 @@ class Pokemon(ABC):
         self.name = name
         self.type = type
         self.hp = hp
+        self.attacks = []
     
     def __str__(self):
         return f"ID: {self.id} | Name: {self.name} | Type: {self.type} | HP: {self.hp}"

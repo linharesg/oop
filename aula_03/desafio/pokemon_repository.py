@@ -39,8 +39,20 @@ class PokemonRepository():
         cursor = connection.cursor()
         cursor.execute(query)
         pokemon_amount = cursor.fetchone()[0]
-        connection.close
+        connection.close()
         return pokemon_amount
 
-
+    def get_pokemon_attacks (self, pokemon: Pokemon):
+        query = """
+            SELECT attacks.* 
+            FROM attacks
+            INNER JOIN pokemon_attacks on (pokemon_attacks.attack_id = attacks.id)
+            WHERE pokemon_id = ?
+            ;"""
+        connection = sqlite3.connect(self.db_name)
+        cursor = connection.cursor()
+        cursor.execute(query, str(pokemon.id))
+        rows = cursor.fetchall()
+        connection.close
+        return rows
 
