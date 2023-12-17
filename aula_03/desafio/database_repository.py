@@ -22,3 +22,21 @@ class DatabateRepository(ABC):
         cursor.executescript(query)
         connection.commit()
         connection.close()
+
+    def run_query_select_fetchone(self, query: str, *params: Any):
+        connection = sqlite3.connect(self.db_name)
+        cursor = connection.cursor()
+        cursor.execute(query, params)
+        connection.commit()
+        rows = cursor.fetchone()
+        connection.close()
+        return rows
+    
+    def run_query_select_fetchall(self, query: str, *params: Any):
+        connection = sqlite3.connect(self.db_name)
+        cursor = connection.cursor()
+        cursor.execute(query, params)
+        connection.commit()
+        rows = cursor.fetchall()
+        connection.close()
+        return rows
