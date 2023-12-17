@@ -19,11 +19,11 @@ if __name__ == "__main__":
 
     # Show pokemon list to choose
     pokemon_list = PokemonRepository(database_name).get_pokemons_list()
-    print("Choose your Pokémon!")
+    print("Choose your Pokemon!")
     for pokemon in pokemon_list:
         print(f"{pokemon[0]}\t{pokemon[1]}")
     # Input pokemon
-    input_pokemon1 = input("Your Pókemon (by ID): ")
+    input_pokemon1 = input("Your Pokemon (by ID): ")
     # Defining pokemon1
     pokemon1_data = PokemonRepository(database_name).get_pokemon_by_id(input_pokemon1)
     pokemon1 = Pokemon(*pokemon1_data)
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     pokemon2.attacks = PokemonRepository(database_name).get_pokemon_attacks(pokemon2)
 
     # Revealing the opponent's pokemon
-    input("Press any key to randomly choose your opponent.")
+    input("Press any key to randomly choose your opponent.\n")
     print(f"Be ready, your opponent is a {pokemon2.name}!")
 
     Battle(pokemon1, pokemon2).start_battle()

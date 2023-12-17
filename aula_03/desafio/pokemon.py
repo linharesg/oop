@@ -26,4 +26,9 @@ class Pokemon(ABC):
     def attack():
         pass
 
+    def is_pokemon_defeated(self):
+        return self.hp <= 0
+
+    def recieve_damage(self, damage):
+        self.hp -= damage
     
