@@ -44,3 +44,5 @@ if __name__ == "__main__":
     print(f"Be ready, your opponent is a {pokemon2.name}!")
 
     Battle(pokemon1, pokemon2).start_battle()
+
+    # print(current_battle.winner)
