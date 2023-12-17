@@ -17,14 +17,14 @@ class DataBaseInitialize(DatabateRepository):
         cursor.executescript("""
             CREATE TABLE IF NOT EXISTS pokemons (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
+                name TEXT UNIQUE NOT NULL,
                 type TEXT NOT NULL,
                 hp INTEGER NOT NULL
             );
             
             CREATE TABLE IF NOT EXISTS attacks (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
+                name TEXT UNIQUE NOT NULL,
                 type TEXT NOT NULL,
                 power INT NOT NULL,
                 cooldown INT NOT NULL
@@ -43,7 +43,8 @@ class DataBaseInitialize(DatabateRepository):
                 pokemon_1_id INTEGER NOT NULL,
                 pokemon_2_id INTEGER NOT NULL,
                 winner INTEGER NOT NULL,
-                timestamp INTEGER NOT NULL,
+                timestamp TEXT NOT NULL,
+                rounds INTEGER NOT NULL,
                 FOREIGN KEY (pokemon_1_id) REFERENCES pokemons(id),
                 FOREIGN KEY (pokemon_2_id) REFERENCES pokemons(id)
             );
@@ -70,24 +71,24 @@ class DataBaseInitialize(DatabateRepository):
             
             INSERT INTO attacks (name, type, power, cooldown) VALUES 
                 ('Tackle', 'Normal', 5, 1),
-                ('Vine Whip', 'Grass', 15, 2),
+                ('Vine Whip', 'Grass', 15, 3),
                 ('Poison Powder', 'Poison', 5, 1),
                 ('Scratch', 'Normal', 4, 0),
                 ('Ember', 'Fire', 3, 2),
                 ('Dragon Rage', 'Fire', 6, 1),
                 ('Water Gun', 'Water', 8, 1),
                 ('Withdraw', 'Water', 5, 0),
-                ('String Shot', 'Bug', 30, 3),
-                ('Bug Bite', 'Bug', 12, 2),
+                ('String Shot', 'Bug', 13, 2),
+                ('Bug Bite', 'Bug', 12, 3),
                 ('Gust', 'Flying', 4, 0),
                 ('Mirror Move', 'Flying', 5, 0),
-                ('Confusion', 'Psychic', 25, 4),
-                ('Hydro Pump', 'Water', 20, 4),
+                ('Confusion', 'Psychic', 12, 3),
+                ('Hydro Pump', 'Water', 7, 2),
                 ('Pay Day', 'Normal', 4, 1),
                 ('Bite', 'Dark', 6, 1),
-                ('Splash', 'Water', 10, 2),
-                ('Flail', 'Normal', 50, 1),
-                ('Thunder Shock', 'Electric', 10, 1),
+                ('Splash', 'Water', 10, 3),
+                ('Flail', 'Normal', 7, 1),
+                ('Thunder Shock', 'Electric', 10, 2),
                 ('Quick Attack', 'Normal', 5, 1),
                 ('Thunderbolt', 'Electric', 9, 2);
 

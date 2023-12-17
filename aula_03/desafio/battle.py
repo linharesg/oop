@@ -1,6 +1,7 @@
 from pokemon import Pokemon
 from random import randint
 from attack import Attack
+import datetime
 class Battle():
 
     
@@ -10,6 +11,10 @@ class Battle():
         self.your_attacks = 0
         self.opponent_attacks = 0
         self.winner = "battle still running"
+        self.start_time = datetime.datetime.now()
+
+    def __str__(self):
+        return f"pokemon1: {self.pokemon1} | pokemon2: {self.pokemon2} | your atk: {self.your_attacks} | opp atk: {self.opponent_attacks} | total round: {self.opponent_attacks + self.your_attacks} | winner : {self.winner}"
     
     def start_battle(self):
         # print(f"It just started an epic battle between a {self.pokemon1.name} and a {self.pokemon2.name}")

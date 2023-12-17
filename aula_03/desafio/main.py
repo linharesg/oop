@@ -3,7 +3,7 @@ from pokemon_repository import PokemonRepository
 from random import randint
 from pokemon import Pokemon
 from battle import Battle
-from attack_repository import AttackRepository
+from battle_repository import BattleRepository
 
 if __name__ == "__main__":
 
@@ -43,6 +43,7 @@ if __name__ == "__main__":
     input("Press any key to randomly choose your opponent.\n")
     print(f"Be ready, your opponent is a {pokemon2.name}!")
 
-    Battle(pokemon1, pokemon2).start_battle()
+    current_battle = Battle(pokemon1, pokemon2)
+    current_battle.start_battle()
 
-    # print(current_battle.winner)
+    BattleRepository(database_name).load_battle_results(current_battle)

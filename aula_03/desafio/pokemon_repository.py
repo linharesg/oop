@@ -14,7 +14,7 @@ class PokemonRepository(DatabateRepository):
     
     def get_pokemons_list(self) -> List[Pokemon]:
         """Get ID and name of all the pokemons"""
-        query = "SELECT id, name FROM pokemons"
+        query = "SELECT id, name FROM pokemons ORDER BY id"
         pokemon_list = super().run_query_select_fetchall(query)
         return pokemon_list
 
