@@ -4,12 +4,11 @@ class Attack:
 
     def your_attack(pokemon1: Pokemon, pokemon2: Pokemon):
         attacks = pokemon1.attacks
-        for attack in attacks:
-            print(f"{attack[0]}\t{attack[1]}")
-        pass
-        chosen_attack = int(input("Choose you attack (by ID): "))
-        for attack in attacks:
-            if attack[0] == chosen_attack:
+        for num, attack in enumerate(attacks):
+            print(f"{num + 1}\t{attack[1]}")
+        chosen_attack = int(input("Choose you attack: "))
+        for num, attack in enumerate(attacks):
+            if num + 1 == chosen_attack:
                 attack_raw_damage = attack[3]
                 input(f"(You): {pokemon1.name}, use {attack[1]}!\n")
                 break
