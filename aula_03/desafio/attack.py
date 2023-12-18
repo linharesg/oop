@@ -6,12 +6,17 @@ class Attack:
         attacks = pokemon1.attacks
         for num, attack in enumerate(attacks):
             print(f"{num + 1}\t{attack[1]}")
-        chosen_attack = int(input("Choose you attack: "))
-        for num, attack in enumerate(attacks):
-            if num + 1 == chosen_attack:
-                attack_raw_damage = attack[3]
-                input(f"(You): {pokemon1.name}, use {attack[1]}!\n")
-                break
+        try:
+            chosen_attack = int(input("Choose you attack: "))
+        except:
+            chosen_attack = 0
+        while not (0 < chosen_attack <= len(attacks)):
+            try:
+                chosen_attack = int(input("Choose your attack according the list above!: "))
+            except:
+                chosen_attack = 0
+        attack_raw_damage = attacks[chosen_attack -1][3]
+        input(f"(You): {pokemon1.name}, use {attacks[chosen_attack -1][1]}!\n")
         pokemon2.recieve_damage(attack_raw_damage)
 
     def opponent_atack(pokemon1: Pokemon, pokemon2: Pokemon):
