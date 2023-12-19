@@ -2,6 +2,21 @@ from pokemon import Pokemon
 from random import randint
 class Attack:
 
+    def __init__ (self,id: int, name: str, type: str, power: int, cooldown: int):
+        self.id = id
+        self.name = name
+        self.type = type
+        self.power = power
+        self.cooldown = cooldown
+        self.current_cooldown = 0
+
+    def __str__(self) -> str:
+        return f"ID: {self.id} | name: {self.name} | type: {self.type} | power = {self.power} | cooldown = {self.cooldown} | current cooldown = {self.current_cooldown}" 
+
+    def __repr__(self) -> str:
+        return f"ID: {self.id} | name: {self.name} | type: {self.type} | power = {self.power} | cooldown = {self.cooldown} | current cooldown = {self.current_cooldown}" 
+        
+
     def your_attack(pokemon1: Pokemon, pokemon2: Pokemon):
         attacks = pokemon1.attacks
         for num, attack in enumerate(attacks):
