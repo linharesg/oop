@@ -1,7 +1,9 @@
 """Pokemon model"""
-from abc import ABC
 from typing import List
-class Pokemon(ABC):
+from pokemon_repository import PokemonRepository
+from attack import Attack
+
+class Pokemon():
     """This class represents a Pokemon
     
     Attributes:
@@ -22,13 +24,23 @@ class Pokemon(ABC):
     
     def __repr__(self) -> str:
         return f"ID: {self.id} | Name: {self.name} | Type: {self.type} | HP: {self.hp}"
-    
-    def attack():
-        pass
 
     def is_pokemon_defeated(self):
         return self.hp <= 0
 
     def recieve_damage(self, damage):
         self.hp -= damage
-    
+
+    def pokemon_definition(db_name, pokemon_id):
+        """Returns data of the Pokemon according to the pokemon's ID inputed"""
+        pokemon_data = PokemonRepository(db_name).get_pokemon_by_id(pokemon_id)
+        return pokemon_data
+
+    def set_pokemon_attacks(db_name, pokemon_id):
+        avaliable_attacks = []
+        pokemon_attacks_id = PokemonRepository(db_name).get_pokemon_attacks_id(pokemon_id)
+
+        for attack in Attack.attacks_list:
+            if attack.id in pokemon_attacks_id:
+                avaliable_attacks.append(attack)
+        return avaliable_attacks

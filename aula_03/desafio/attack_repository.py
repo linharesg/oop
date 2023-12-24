@@ -1,6 +1,6 @@
 from database_repository import DatabateRepository
-from pokemon import Pokemon
-from attack import Attack
+
+# from attack import Attack
 class AttackRepository(DatabateRepository):
 
     def __init__(self, db_name: str):
@@ -12,11 +12,9 @@ class AttackRepository(DatabateRepository):
         FROM attacks"""
         return super().run_query_select_fetchall(query)
     
-repository = AttackRepository("pokemon_game.db").get_attacks()
-print(len(repository))
-a = []
-for i, attack in enumerate(repository):
-     a.append(Attack(*repository[i]))
-
-for attack in a:
-    print(attack)
+    def get_attacks_amount(self):
+        """Get the amount of attacks in database"""
+        query = "SELECT COUNT(*) FROM attacks"
+        pokemon_amount = super().run_query_select_fetchone(query)[0]
+        return pokemon_amount
+    

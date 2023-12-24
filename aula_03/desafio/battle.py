@@ -1,7 +1,7 @@
 from pokemon import Pokemon
 from random import randint
 from attack import Attack
-import datetime
+from datetime import datetime
 class Battle():
 
     
@@ -11,15 +11,13 @@ class Battle():
         self.your_attacks = 0
         self.opponent_attacks = 0
         self.winner = "battle still running"
-        self.start_time = datetime.datetime.now()
+        self.start_time = datetime.now()
 
     def __str__(self):
         return f"pokemon1: {self.pokemon1} | pokemon2: {self.pokemon2} | your atk: {self.your_attacks} | opp atk: {self.opponent_attacks} | total round: {self.opponent_attacks + self.your_attacks} | winner : {self.winner}"
     
     def start_battle(self):
-        # print(f"It just started an epic battle between a {self.pokemon1.name} and a {self.pokemon2.name}")
-        # # Choose the first player to attack
-        
+
         if not self.opponent_attacks and not self.your_attacks:
             if randint(0,1) == 0:
                 input("You Start the battle! Press enter to continue.\n")
@@ -28,10 +26,9 @@ class Battle():
                 input("Your opponent start the battle. Press enter to continue.\n")
                 Battle.opponent_turn(self)
 
-    def new_turn(self):
-        pass
-
     def your_turn(self):
+
+        # Check if pokemon1 is defeated
         if self.pokemon1.is_pokemon_defeated():
             print(f"Oh no! Unfortunately your {self.pokemon1.name} was defeated! Keep practicing to improve your battle skills!")
             self.winner = "Opponent"
@@ -54,4 +51,3 @@ class Battle():
         input("Be ready for your opponent's attack! Press enter to continue.")
         Attack.opponent_atack(self.pokemon1, self.pokemon2)
         self.your_turn()
-        pass
