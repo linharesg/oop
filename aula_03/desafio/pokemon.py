@@ -44,3 +44,10 @@ class Pokemon():
             if attack.id in pokemon_attacks_id:
                 avaliable_attacks.append(attack)
         return avaliable_attacks
+
+    def show_pokemon_list(db_name):
+        pokemon_list = PokemonRepository(db_name).get_pokemons_list()
+        print("Choose your Pokemon!")
+        for pokemon in pokemon_list:
+            print(f"{pokemon[0]}\t{pokemon[1]}")
+    

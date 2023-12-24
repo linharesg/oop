@@ -1,5 +1,4 @@
-from abc import ABC
-from battle import Battle
+# from battle import Battle
 from database_repository import DatabateRepository
 
 class BattleRepository(DatabateRepository):
@@ -7,7 +6,7 @@ class BattleRepository(DatabateRepository):
     def __init__(self, db_name):
         self.db_name = db_name
 
-    def load_battle_results(self, battle: Battle):
+    def load_battle_results(self, battle):
         
         pokemon1 = str(battle.pokemon1.id)
         pokemon2 = str(battle.pokemon2.id)

@@ -2,6 +2,8 @@ from pokemon import Pokemon
 from random import randint
 from attack import Attack
 from datetime import datetime
+from pokemon_repository import PokemonRepository
+from battle_repository import BattleRepository
 class Battle():
 
     
@@ -16,21 +18,27 @@ class Battle():
     def __str__(self):
         return f"pokemon1: {self.pokemon1} | pokemon2: {self.pokemon2} | your atk: {self.your_attacks} | opp atk: {self.opponent_attacks} | total round: {self.opponent_attacks + self.your_attacks} | winner : {self.winner}"
     
-    def start_battle(self):
+    def start_battle(db_name: str):
 
-        if not self.opponent_attacks and not self.your_attacks:
+        pokemon1 = Battle.choose_pokemon_1(db_name)
+        pokemon2 = Battle.choose_pokemon_2(db_name)
+        current_battle = Battle(pokemon1, pokemon2)
+
+        if not current_battle.opponent_attacks and not current_battle.your_attacks:
             if randint(0,1) == 0:
                 input("You Start the battle! Press enter to continue.\n")
-                Battle.your_turn(self)
+                Battle.your_turn(current_battle)
             else:
                 input("Your opponent start the battle. Press enter to continue.\n")
-                Battle.opponent_turn(self)
+                Battle.opponent_turn(current_battle)
+
+        BattleRepository(db_name).load_battle_results(current_battle)
 
     def your_turn(self):
 
         # Check if pokemon1 is defeated
         if self.pokemon1.is_pokemon_defeated():
-            print(f"Oh no! Unfortunately your {self.pokemon1.name} was defeated! Keep practicing to improve your battle skills!")
+            input(f"Oh no! Unfortunately your {self.pokemon1.name} was defeated! Keep practicing to improve your battle skills!")
             self.winner = "Opponent"
             return
         self.your_attacks += 1
@@ -43,7 +51,7 @@ class Battle():
         
         # Check if pokemon2 is defeated.
         if self.pokemon2.is_pokemon_defeated():
-            print(f"Your {self.pokemon1.name} did great, you won the battle. Congratulations!")
+            input(f"Your {self.pokemon1.name} did great, you won the battle. Congratulations!")
             self.winner = "You"
             return
         self.opponent_attacks += 1
@@ -51,3 +59,23 @@ class Battle():
         input("Be ready for your opponent's attack! Press enter to continue.")
         Attack.opponent_atack(self.pokemon1, self.pokemon2)
         self.your_turn()
+
+    def choose_pokemon_1(db_name):
+        # Defining pokemon1
+        Pokemon.show_pokemon_list(db_name)
+        input_pokemon1 = input("Your Pokemon (by ID): ")
+        pokemon1 = Pokemon(*Pokemon.pokemon_definition(db_name, input_pokemon1))
+        pokemon1.attacks = Pokemon.set_pokemon_attacks(db_name, input_pokemon1)
+        print(f"Well done! Your pokemon is {pokemon1.name}.")
+        return pokemon1
+    
+    def choose_pokemon_2(db_name):
+        pokemon_amount = PokemonRepository(db_name).get_pokemon_amount()
+        random_pokemon2 = str(randint(1, pokemon_amount))
+        # Defining pokemon2 attributes
+        pokemon2 = Pokemon(*Pokemon.pokemon_definition(db_name, random_pokemon2))
+        pokemon2.attacks = Pokemon.set_pokemon_attacks(db_name, random_pokemon2)
+        input("Press any key to randomly choose your opponent.\n")
+        print(f"Be ready, your opponent is a {pokemon2.name}!")
+        return pokemon2
+    
