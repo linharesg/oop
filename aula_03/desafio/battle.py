@@ -92,8 +92,8 @@ class Battle():
             except:
                 chosen_attack = 0
         attack_raw_damage = attacks[chosen_attack -1].power
-        final_damage = DamageCalculator.calculate_damage(self.pokemon2.type, attacks[chosen_attack -1].type, attack_raw_damage)
         input(f"(You): {pokemon1.name}, use {attacks[chosen_attack -1].name}!\n")
+        final_damage = DamageCalculator.calculate_damage(self.pokemon2.type, attacks[chosen_attack -1].type, attack_raw_damage)
         pokemon2.recieve_damage(final_damage)
 
     def opponent_atack(self, pokemon1, pokemon2):
@@ -101,6 +101,6 @@ class Battle():
         attack_amount = len(attacks)
         chosen_attack = randint(0, attack_amount -1)
         attack_raw_damage = attacks[chosen_attack].power
-        final_damage = DamageCalculator.calculate_damage(self.pokemon1.type, attacks[chosen_attack].type, attack_raw_damage)
         input(f"(Opponent): {pokemon2.name}, use {attacks[chosen_attack].name}!\n")
+        final_damage = DamageCalculator.calculate_damage(self.pokemon1.type, attacks[chosen_attack].type, attack_raw_damage)
         pokemon1.recieve_damage(final_damage)
