@@ -1,9 +1,9 @@
 from pokemon import Pokemon
 from random import randint
-from attack import Attack
 from datetime import datetime
 from pokemon_repository import PokemonRepository
 from battle_repository import BattleRepository
+from damage_calculator import DamageCalculator
 class Battle():
 
     
@@ -33,7 +33,6 @@ class Battle():
                 Battle.opponent_turn(current_battle)
 
         BattleRepository(db_name).load_battle_results(current_battle)
-
     def your_turn(self):
 
         # Check if pokemon1 is defeated
@@ -44,7 +43,7 @@ class Battle():
         self.your_attacks += 1
         input(f"Your {self.pokemon1.name} is current with {self.pokemon1.hp} healh points.")
         print("Choose your attack!")
-        Attack.your_attack(self.pokemon1, self.pokemon2)
+        Battle.your_attack(self, self.pokemon1, self.pokemon2)
         self.opponent_turn()
 
     def opponent_turn(self):
@@ -57,7 +56,7 @@ class Battle():
         self.opponent_attacks += 1
         print(f"Opponent's {self.pokemon2.name} is current with {self.pokemon2.hp} health points.")
         input("Be ready for your opponent's attack! Press enter to continue.")
-        Attack.opponent_atack(self.pokemon1, self.pokemon2)
+        Battle.opponent_atack(self, self.pokemon1, self.pokemon2)
         self.your_turn()
 
     def choose_pokemon_1(db_name):
@@ -79,3 +78,29 @@ class Battle():
         print(f"Be ready, your opponent is a {pokemon2.name}!")
         return pokemon2
     
+    def your_attack(self, pokemon1, pokemon2):
+        attacks = pokemon1.attacks
+        for num, attack in enumerate(attacks):
+            print(f"{num + 1}\t{attack.name}")
+        try:
+            chosen_attack = int(input("Choose you attack: "))
+        except:
+            chosen_attack = 0
+        while not (0 < chosen_attack <= len(attacks)):
+            try:
+                chosen_attack = int(input("Choose your attack according the list above!: "))
+            except:
+                chosen_attack = 0
+        attack_raw_damage = attacks[chosen_attack -1].power
+        final_damage = DamageCalculator.calculate_damage(self.pokemon2.type, attacks[chosen_attack -1].type, attack_raw_damage)
+        input(f"(You): {pokemon1.name}, use {attacks[chosen_attack -1].name}!\n")
+        pokemon2.recieve_damage(final_damage)
+
+    def opponent_atack(self, pokemon1, pokemon2):
+        attacks = pokemon2.attacks
+        attack_amount = len(attacks)
+        chosen_attack = randint(0, attack_amount -1)
+        attack_raw_damage = attacks[chosen_attack].power
+        final_damage = DamageCalculator.calculate_damage(self.pokemon1.type, attacks[chosen_attack].type, attack_raw_damage)
+        input(f"(Opponent): {pokemon2.name}, use {attacks[chosen_attack].name}!\n")
+        pokemon1.recieve_damage(final_damage)
