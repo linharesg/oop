@@ -4,6 +4,7 @@ from datetime import datetime
 from pokemon_repository import PokemonRepository
 from battle_repository import BattleRepository
 from damage_calculator import DamageCalculator
+from attack import Attack
 class Battle():
 
     
@@ -43,7 +44,7 @@ class Battle():
         self.your_attacks += 1
         input(f"Your {self.pokemon1.name} is current with {self.pokemon1.hp} healh points.")
         print("Choose your attack!")
-        Battle.your_attack(self, self.pokemon1, self.pokemon2)
+        Battle.your_attack(self)
         self.opponent_turn()
 
     def opponent_turn(self):
@@ -56,7 +57,7 @@ class Battle():
         self.opponent_attacks += 1
         print(f"Opponent's {self.pokemon2.name} is current with {self.pokemon2.hp} health points.")
         input("Be ready for your opponent's attack! Press enter to continue.")
-        Battle.opponent_atack(self, self.pokemon1, self.pokemon2)
+        Battle.opponent_atack(self)
         self.your_turn()
 
     def choose_pokemon_1(db_name):
@@ -78,29 +79,71 @@ class Battle():
         print(f"Be ready, your opponent is a {pokemon2.name}!")
         return pokemon2
     
-    def your_attack(self, pokemon1, pokemon2):
-        attacks = pokemon1.attacks
-        for num, attack in enumerate(attacks):
-            print(f"{num + 1}\t{attack.name}")
+    def your_attack(self):
+        Battle.decrease_cooldown(self.pokemon1.attacks)
+        avaliable_attacks = {}
+        for num, attack in enumerate(self.pokemon1.attacks):
+            if attack.current_cooldown == 0:
+                print(f"{num + 1}\t{attack.name}")
+                avaliable_attacks[num + 1] = attack
+            else:
+                print(f"{num + 1}\t{attack.name}\t cooldown: {attack.current_cooldown}")
+        
         try:
             chosen_attack = int(input("Choose you attack: "))
         except:
             chosen_attack = 0
-        while not (0 < chosen_attack <= len(attacks)):
+        while not (chosen_attack in avaliable_attacks.keys()):
             try:
-                chosen_attack = int(input("Choose your attack according the list above!: "))
+                chosen_attack = int(input("Choose an attack without cooldown according the list above!: "))
             except:
                 chosen_attack = 0
-        attack_raw_damage = attacks[chosen_attack -1].power
-        input(f"(You): {pokemon1.name}, use {attacks[chosen_attack -1].name}!\n")
-        final_damage = DamageCalculator.calculate_damage(self.pokemon2.type, attacks[chosen_attack -1].type, attack_raw_damage)
-        pokemon2.recieve_damage(final_damage)
 
-    def opponent_atack(self, pokemon1, pokemon2):
-        attacks = pokemon2.attacks
-        attack_amount = len(attacks)
-        chosen_attack = randint(0, attack_amount -1)
-        attack_raw_damage = attacks[chosen_attack].power
-        input(f"(Opponent): {pokemon2.name}, use {attacks[chosen_attack].name}!\n")
-        final_damage = DamageCalculator.calculate_damage(self.pokemon1.type, attacks[chosen_attack].type, attack_raw_damage)
-        pokemon1.recieve_damage(final_damage)
+        Battle.increase_cooldown(self.pokemon1.attacks[chosen_attack -1])
+    
+        attack_raw_damage = self.pokemon1.attacks[chosen_attack -1].power
+        input(f"(You): {self.pokemon1.name}, use {self.pokemon1.attacks[chosen_attack -1].name}!\n")
+        final_damage = DamageCalculator.calculate_damage(self.pokemon2.type, self.pokemon1.attacks[chosen_attack -1].type, attack_raw_damage)
+        self.pokemon2.recieve_damage(final_damage)
+
+    def opponent_atack(self):
+        
+        Battle.decrease_cooldown(self.pokemon2.attacks)
+        avaliable_attacks = []
+
+        for attack in self.pokemon2.attacks:
+            if attack.current_cooldown == 0:
+                # print(f"{num}\t{attack.name}")
+                avaliable_attacks.append(attack.id)
+            # else:
+                # print(f"{num}\t{attack.name}\t cooldown: {attack.current_cooldown}")
+        
+        # print(f"avaliable attacks: {avaliable_attacks}")
+        attack_amount = len(avaliable_attacks)
+        random_index = randint(0, attack_amount -1)
+        # print(f"chosen attack: {random_index}")
+
+        chosen_attack_id = avaliable_attacks[random_index]
+
+        for attack in self.pokemon2.attacks:
+            if chosen_attack_id == attack.id:
+                chosen_attack = attack
+                break
+        Battle.increase_cooldown(chosen_attack)
+
+        attack_raw_damage = chosen_attack.power
+        input(f"(Opponent): {self.pokemon2.name}, use {chosen_attack.name}!\n")
+        final_damage = DamageCalculator.calculate_damage(self.pokemon1.type, chosen_attack.type, attack_raw_damage)
+        self.pokemon1.recieve_damage(final_damage)
+
+    def increase_cooldown(attack: Attack):
+        # print(f"atual: {attack}")
+        attack.current_cooldown = attack.cooldown + 1
+        # print(f"novo: {attack}")
+
+    def decrease_cooldown(attacks: Attack):
+        for attack in attacks:
+            if attack.current_cooldown > 0:
+                attack.current_cooldown -= 1
+        # print(f"decrease: {attacks}")
+
