@@ -82,10 +82,8 @@ class Battle():
         avaliable_attacks = {}
         for num, attack in enumerate(self.pokemon1.attacks):
             if attack.current_cooldown == 0:
-                print(f"{num + 1}\t{attack.name}\t\t cooldown: {attack.current_cooldown} | C: {attack.cooldown} | {attack}")
                 avaliable_attacks[num + 1] = attack
-            else:
-                print(f"!!!!{num + 1}\t{attack.name}\t\t cooldown: {attack.current_cooldown} | C: {attack.cooldown} | {attack}")
+            print(f"{num + 1}\t{attack.name}\t\t cooldown: {attack.current_cooldown}/{attack.cooldown}")
         
         if not len(avaliable_attacks):
             input("Your pokemon is exhausted of attacking! Wait until the next round to a new attack without cooldown.")

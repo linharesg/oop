@@ -13,11 +13,11 @@ class Attack:
         self.cooldown = cooldown
         self.current_cooldown = 0
 
-    # def __str__(self) -> str:
-    #     return f"ID: {self.id} | name: {self.name} | type: {self.type} | power = {self.power} | cooldown = {self.cooldown} | current cooldown = {self.current_cooldown}\n" 
+    def __str__(self) -> str:
+        return f"ID: {self.id} | name: {self.name} | type: {self.type} | power = {self.power} | cooldown = {self.cooldown} | current cooldown = {self.current_cooldown}\n" 
 
-    # def __repr__(self) -> str:
-    #     return f"ID: {self.id} | name: {self.name} | type: {self.type} | power = {self.power} | cooldown = {self.cooldown} | current cooldown = {self.current_cooldown}\n" 
+    def __repr__(self) -> str:
+        return f"ID: {self.id} | name: {self.name} | type: {self.type} | power = {self.power} | cooldown = {self.cooldown} | current cooldown = {self.current_cooldown}\n" 
     
 
     def attacks_definition(db_name):
