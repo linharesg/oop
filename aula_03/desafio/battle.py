@@ -61,7 +61,6 @@ class Battle():
         self.your_turn()
 
     def choose_pokemon_1(db_name):
-        # Defining pokemon1
         Pokemon.show_pokemon_list(db_name)
         input_pokemon1 = input("Your Pokemon (by ID): ")
         pokemon1 = Pokemon(*Pokemon.pokemon_definition(db_name, input_pokemon1))
@@ -72,7 +71,6 @@ class Battle():
     def choose_pokemon_2(db_name):
         pokemon_amount = PokemonRepository(db_name).get_pokemon_amount()
         random_pokemon2 = str(randint(1, pokemon_amount))
-        # Defining pokemon2 attributes
         pokemon2 = Pokemon(*Pokemon.pokemon_definition(db_name, random_pokemon2))
         pokemon2.attacks = Pokemon.set_pokemon_attacks(db_name, random_pokemon2)
         input("Press any key to randomly choose your opponent.\n")
@@ -84,11 +82,15 @@ class Battle():
         avaliable_attacks = {}
         for num, attack in enumerate(self.pokemon1.attacks):
             if attack.current_cooldown == 0:
-                print(f"{num + 1}\t{attack.name}")
+                print(f"{num + 1}\t{attack.name}\t\t cooldown: {attack.current_cooldown} | C: {attack.cooldown} | {attack}")
                 avaliable_attacks[num + 1] = attack
             else:
-                print(f"{num + 1}\t{attack.name}\t cooldown: {attack.current_cooldown}")
+                print(f"!!!!{num + 1}\t{attack.name}\t\t cooldown: {attack.current_cooldown} | C: {attack.cooldown} | {attack}")
         
+        if not len(avaliable_attacks):
+            input("Your pokemon is exhausted of attacking! Wait until the next round to a new attack without cooldown.")
+            return
+
         try:
             chosen_attack = int(input("Choose you attack: "))
         except:
@@ -98,7 +100,7 @@ class Battle():
                 chosen_attack = int(input("Choose an attack without cooldown according the list above!: "))
             except:
                 chosen_attack = 0
-
+                
         Battle.increase_cooldown(self.pokemon1.attacks[chosen_attack -1])
     
         attack_raw_damage = self.pokemon1.attacks[chosen_attack -1].power
@@ -113,16 +115,18 @@ class Battle():
 
         for attack in self.pokemon2.attacks:
             if attack.current_cooldown == 0:
-                # print(f"{num}\t{attack.name}")
+                # print(f"{attack.id}\t{attack.name}\t\t cooldown: {attack.current_cooldown} | C: {attack.cooldown} | {attack}")
                 avaliable_attacks.append(attack.id)
             # else:
-                # print(f"{num}\t{attack.name}\t cooldown: {attack.current_cooldown}")
-        
-        # print(f"avaliable attacks: {avaliable_attacks}")
-        attack_amount = len(avaliable_attacks)
-        random_index = randint(0, attack_amount -1)
-        # print(f"chosen attack: {random_index}")
+                # print(f"{attack.id}\t{attack.name}\t\t cooldown: {attack.current_cooldown} | C: {attack.cooldown} | {attack}")
 
+        attack_amount = len(avaliable_attacks)
+
+        if not attack_amount:
+            input("Opponent's pokemon is exhausted of attacking!")
+            return            
+
+        random_index = randint(0, attack_amount -1)
         chosen_attack_id = avaliable_attacks[random_index]
 
         for attack in self.pokemon2.attacks:
@@ -137,13 +141,11 @@ class Battle():
         self.pokemon1.recieve_damage(final_damage)
 
     def increase_cooldown(attack: Attack):
-        # print(f"atual: {attack}")
         attack.current_cooldown = attack.cooldown + 1
-        # print(f"novo: {attack}")
 
     def decrease_cooldown(attacks: Attack):
         for attack in attacks:
             if attack.current_cooldown > 0:
                 attack.current_cooldown -= 1
-        # print(f"decrease: {attacks}")
+
 

@@ -2,6 +2,7 @@
 from typing import List
 from pokemon_repository import PokemonRepository
 from attack import Attack
+import copy
 
 class Pokemon():
     """This class represents a Pokemon
@@ -42,7 +43,7 @@ class Pokemon():
 
         for attack in Attack.attacks_list:
             if attack.id in pokemon_attacks_id:
-                avaliable_attacks.append(attack)
+                avaliable_attacks.append(copy.deepcopy(attack))
         return avaliable_attacks
 
     def show_pokemon_list(db_name):
