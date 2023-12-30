@@ -165,7 +165,7 @@ class Battle():
                 chosen_attack = 0
         
         # Increase the chosen attack by one.
-        Battle.increase_cooldown(self.pokemon1.attacks[chosen_attack -1])
+        self.pokemon1.attacks[chosen_attack -1].increase_cooldown()
 
         # Calculate the raw damage and final damage based on the pokemon and attack type.
         attack_raw_damage = self.pokemon1.attacks[chosen_attack -1].power
@@ -209,7 +209,7 @@ class Battle():
                 break
 
         # Increase the attack's colldown.
-        Battle.increase_cooldown(chosen_attack)
+        chosen_attack.increase_cooldown()
 
         # Calculate the raw and final damage based on the pokemon and attack type.
         attack_raw_damage = chosen_attack.power
@@ -217,14 +217,6 @@ class Battle():
         final_damage = DamageCalculator.calculate_damage(self.pokemon1.type, chosen_attack.type, attack_raw_damage)
         self.pokemon1.recieve_damage(final_damage)
     
-    def increase_cooldown(attack: Attack):
-        """Increases the attacks cooldown by one.
-        
-        Args:
-            attack (Attack): The attack to have the cooldown increased.
-        """
-        attack.current_cooldown = attack.cooldown + 1
-
     def decrease_cooldown(attacks: List[Attack]):
         """Decreases the attack's cooldown if it is not 0.
         

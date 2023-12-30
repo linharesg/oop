@@ -40,6 +40,12 @@ class Attack:
         for attack in attacks:
             Attack.attacks_list.append(Attack(*attack))
 
-
+    def increase_cooldown(self):
+        """Increases the attacks cooldown by one.
+        
+        Args:
+            attack (Attack): The attack to have the cooldown increased.
+        """
+        self.current_cooldown = self.cooldown + 1
 
     
