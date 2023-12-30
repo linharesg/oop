@@ -27,17 +27,6 @@ class Pokemon():
     def __repr__(self) -> str:
         return f"ID: {self.id} | Name: {self.name} | Type: {self.type} | HP: {self.hp}"
 
-    def is_pokemon_defeated(self):
-        "Check if the pokemon is defeated during a battle."
-        return self.hp <= 0
-
-    def recieve_damage(self, damage: int):
-        """Decrese the pokemon's hp during a battle, according the damage received.
-        
-        Args:
-            damage (int): Power of the damage, corresponding the hp to be decreased.
-        """
-        self.hp -= damage
 
     @staticmethod
     def pokemon_definition(db_name: str, pokemon_id: str):
@@ -92,3 +81,15 @@ class Pokemon():
             return int(pokemon_id) in PokemonRepository(db_name).get_pokemons_id_list()
         except:
             return 0
+
+    def is_pokemon_defeated(self):
+        "Check if the pokemon is defeated during a battle."
+        return self.hp <= 0
+
+    def recieve_damage(self, damage: int):
+        """Decrese the pokemon's hp during a battle, according the damage received.
+        
+        Args:
+            damage (int): Power of the damage, corresponding the hp to be decreased.
+        """
+        self.hp -= damage

@@ -4,8 +4,8 @@ from datetime import datetime
 from pokemon_repository import PokemonRepository
 from battle_repository import BattleRepository
 from damage_calculator import DamageCalculator
-from attack import Attack
-from typing import List
+
+
 class Battle():
     """Represents a battle between two pokemons, controling the rounds, attacks and results.
 
@@ -115,7 +115,8 @@ class Battle():
         print(f"Well done! Your pokemon is {pokemon1.name}.")
         return pokemon1
     
-    def choose_pokemon_2(db_name):
+    @staticmethod
+    def choose_pokemon_2(db_name: str):
         """Choose the opponent's pokemon.
         
         Args:
