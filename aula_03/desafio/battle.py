@@ -135,7 +135,8 @@ class Battle():
         "Use an avaliable attack aaccording to the available ones, controling its cooldown"
 
         # Decrease the cooldown of the pokemon attacks.
-        Battle.decrease_cooldown(self.pokemon1.attacks)
+        for attack in self.pokemon1.attacks:
+            attack.decrease_cooldown()
 
         # Create an empty dictionary to stores the pokemon's available attacks (without cooldown).
         avaliable_attacks = {}
@@ -181,7 +182,8 @@ class Battle():
         input("Be ready for your opponent's attack! Press enter to continue.")
         
         # Decreases the attacks cooldown.
-        Battle.decrease_cooldown(self.pokemon2.attacks)
+        for attack in self.pokemon2.attacks:
+            attack.decrease_cooldown()
 
         # Creates a empty list do store the available attacks (without cooldown).
         avaliable_attacks = []
@@ -216,15 +218,5 @@ class Battle():
         input(f"(Opponent): {self.pokemon2.name}, use {chosen_attack.name}!\n")
         final_damage = DamageCalculator.calculate_damage(self.pokemon1.type, chosen_attack.type, attack_raw_damage)
         self.pokemon1.recieve_damage(final_damage)
-    
-    def decrease_cooldown(attacks: List[Attack]):
-        """Decreases the attack's cooldown if it is not 0.
-        
-        Args:
-            Attacks (List[Attack]): List of the pokemons attacks
-        """
-        for attack in attacks:
-            if attack.current_cooldown > 0:
-                attack.current_cooldown -= 1
 
 

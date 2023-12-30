@@ -1,6 +1,6 @@
 from random import randint
 from attack_repository import AttackRepository
-
+from typing import List
 class Attack:
     """Represent the pokemon's attacks.
 
@@ -41,11 +41,12 @@ class Attack:
             Attack.attacks_list.append(Attack(*attack))
 
     def increase_cooldown(self):
-        """Increases the attacks cooldown by one.
-        
-        Args:
-            attack (Attack): The attack to have the cooldown increased.
-        """
+        "Increases the attacks cooldown by one."
+
         self.current_cooldown = self.cooldown + 1
 
-    
+    def decrease_cooldown(self):
+        "Decreases the attack's cooldown if it is not 0."
+
+        if self.current_cooldown > 0:
+            self.current_cooldown -= 1
