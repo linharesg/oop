@@ -1,4 +1,4 @@
-from inicializador_db import DataBaseInitialize
+from db_inicializator import DataBaseInitialize
 from battle import Battle
 from attack import Attack
 
@@ -10,13 +10,15 @@ if __name__ == "__main__":
     # Creating the database tables (if it doenst exists)
     DataBaseInitialize.create_table(database_name)
 
-    # Inserting default data if pokemon table is empty
+    # Inserting default data if there is no data
     pokemons_inseridos = DataBaseInitialize.check_database(database_name)
     if pokemons_inseridos == None:
         DataBaseInitialize.insert_default_data(database_name)
-        # Create objects for each Attack
+
+    # Create objects for each Attack
     Attack.attacks_definition(database_name)
     
+    # Start the game by printing the initial Menu, where the user can choose the options.
     while True:
         option = input(
 """

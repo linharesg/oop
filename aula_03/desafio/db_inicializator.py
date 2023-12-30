@@ -2,14 +2,14 @@ import sqlite3
 from database_repository import DatabateRepository
 
 class DataBaseInitialize(DatabateRepository):
-    """Classe que inicia o banco de dados, criando as tabelas"""
+    """Class that starts the database, creating the tables."""
 
     @staticmethod
     def create_table(db_name: str):
         """Create the database tables.
         
         Args:
-            db_name (str): Name of the table being created.
+            db_name (str): Name of the database.
         """
 
         connection = sqlite3.connect(db_name)
@@ -53,8 +53,14 @@ class DataBaseInitialize(DatabateRepository):
         connection.commit()
         connection.close()
     
-    # 
-    def insert_default_data(db_name):
+    @staticmethod
+    def insert_default_data(db_name: str):
+        """Insert default data into the tables created to the game's database.
+        
+        Args:
+            db_name (str): Name of the database.
+        """
+
         connection = sqlite3.connect(db_name)
         cursor = connection.cursor()
         cursor.executescript("""
@@ -121,13 +127,4 @@ class DataBaseInitialize(DatabateRepository):
                 (20, 9),
                 (21, 9);
             """)
-        
-    def check_database(db_name):
-        connection = sqlite3.connect(db_name)
-        cursor = connection.cursor()
-        cursor.execute("""
-        SELECT MIN(id) FROM pokemons
-        """)
-        row = cursor.fetchone()
-        connection.close
-        return row[0]
+

@@ -1,13 +1,21 @@
-# from battle import Battle
+# from battle import Battle (cannot import battle cause of circular import)
 from database_repository import DatabateRepository
 
 class BattleRepository(DatabateRepository):
-
-    def __init__(self, db_name):
+    """This class is used to create the connection between the battle results and the database
+    
+    Attributes:
+        db_name: name of the database.
+    """
+    def __init__(self, db_name: str):
         self.db_name = db_name
 
     def load_battle_results(self, battle):
+        """Loads the battle results to the database
         
+        Args:
+            battle (Battle): The battle to have the results stored
+        """
         pokemon1 = str(battle.pokemon1.id)
         pokemon2 = str(battle.pokemon2.id)
         winner = battle.winner

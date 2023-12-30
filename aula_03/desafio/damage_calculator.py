@@ -1,13 +1,7 @@
 # from battle import Battle
 
 class DamageCalculator:
-    """DamageCalculator is used to calculate the final damage, based on the attack and pokemon types
-    
-    Attributes:
-
-    Returns:
-    
-    """
+    "DamageCalculator is used to calculate the final damage, based on the attack and pokemon types."
 
     multipliers = {
         'Bug': {'Grass': 1.5, 'Psychic': 1.2, 'Dark': 1.2, 'Fire': 0.8},
@@ -32,15 +26,19 @@ class DamageCalculator:
 
 
     def calculate_damage(pokemon_type: str, attack_type: str, attack_raw_damage: int):
+        """Calculates the final damage based on the pokemon and attacks type
         
+        Args:
+            pokemon_type (str): Type of the pokemon who is receiving the damage.
+            attack_type (str): Type of the attack wich is dealing the damage.
+            attack_raw_damage (int): The raw damage caused by the attack.
+        """
         try:
             multiplier = DamageCalculator.multipliers[attack_type][pokemon_type]
         except:
             multiplier = 1
-        # print(f"multiplicador consta?: {pokemon_type in DamageCalculator.multipliers[attack_type].keys()}")
-        # print(f"multiplicador: {multiplier}")
-        # print(f"pokemon type: {pokemon_type}")
-        # print(f"atk type: {attack_type}")
+
+        # Print different messages according the multiplier of the attack.
         if 1 < multiplier <= 1.2:
             print("The attack was quite effective!")
         elif 1.2 < multiplier < 1.7:
@@ -50,4 +48,4 @@ class DamageCalculator:
         elif multiplier < 1:
             print("Not very effective. The attack didn't have much impact.")
 
-        return round(attack_raw_damage * multiplier,0)
+        return round(attack_raw_damage * multiplier, 0)
