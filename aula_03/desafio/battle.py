@@ -77,7 +77,8 @@ class Battle():
         self.opponent_turn()
 
     def opponent_turn(self):
-        
+        "Controls the sequence of commands in opponent's round."
+
         # Check if pokemon2 is defeated.
         if self.pokemon2.is_pokemon_defeated():
             input(f"Your {self.pokemon1.name} did great, you won the battle. Congratulations!")
@@ -97,7 +98,7 @@ class Battle():
         self.your_turn()
 
     @staticmethod
-    def choose_pokemon_1(db_name):
+    def choose_pokemon_1(db_name: str):
         """Choose the user's pokemon.
         
         Args:

@@ -40,14 +40,20 @@ class Pokemon():
         self.hp -= damage
 
     @staticmethod
-    def pokemon_definition(db_name: str, pokemon_id: int):
+    def pokemon_definition(db_name: str, pokemon_id: str):
         """Returns data of the Pokemon according to the pokemon's ID inputed
         
         Args:
             db_name (str): name of the database.
-            pokemon_id (int): pokemon's ID.
+            pokemon_id (str): pokemon's ID.
         """
+
+        while not Pokemon.validate_pokemon_input(pokemon_id, db_name):
+            pokemon_id = input("Input a valid pokemon ID according the list above!: ")
+
         pokemon_data = PokemonRepository(db_name).get_pokemon_by_id(pokemon_id)
+
+
         return pokemon_data
 
     @staticmethod
@@ -79,3 +85,10 @@ class Pokemon():
         for pokemon in pokemon_list:
             print(f"{pokemon[0]}\t{pokemon[1]}")
     
+    @staticmethod
+    def validate_pokemon_input(pokemon_id: str, db_name: str):
+        """Verify if the pokemon's ID is valid"""
+        try:
+            return int(pokemon_id) in PokemonRepository(db_name).get_pokemons_id_list()
+        except:
+            return 0

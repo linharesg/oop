@@ -18,6 +18,14 @@ class PokemonRepository(DatabateRepository):
         pokemon_list = super().run_query_select_fetchall(query)
         return pokemon_list
 
+    def get_pokemons_id_list(self):
+        "Get the list of pokemons ID in the database"
+        
+        """Get ID and name of all the pokemons"""
+        query = "SELECT id FROM pokemons ORDER BY id"
+        pokemon_id_list = super().run_query_select_fetchall(query)
+        return [row[0] for row in pokemon_id_list]
+
     def get_pokemon_by_id(self, id: int) -> str:
         """Get the data of a pokemon by its ID
         
