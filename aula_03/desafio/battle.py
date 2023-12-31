@@ -1,5 +1,5 @@
 from pokemon import Pokemon
-from random import randint
+from random import randint, choice
 from datetime import datetime
 from pokemon_repository import PokemonRepository
 from battle_repository import BattleRepository
@@ -56,7 +56,7 @@ class Battle():
         BattleRepository(db_name).load_battle_results(current_battle)
 
     @staticmethod
-    def choose_pokemon_1(db_name: str):
+    def choose_pokemon_1(db_name: str) -> Pokemon:
         """Choose the user's pokemon.
         
         Args:
@@ -65,14 +65,12 @@ class Battle():
         
         # Show the list of the available pokemons and ask for a input.
         Pokemon.show_pokemon_list(db_name)
-        # input_pokemon1 = input("Your Pokemon (by ID): ")
-
         input_pokemon1 = Pokemon.validate_pokemon_input(db_name)
 
         # Instantiate the user's pokemon and attacks.
         pokemon1 = Pokemon(*Pokemon.pokemon_definition(db_name, input_pokemon1))
-
         pokemon1.attacks = Pokemon.set_pokemon_attacks(db_name, input_pokemon1)
+
         print(f"Well done! Your pokemon is {pokemon1.name}.")
         return pokemon1
     
@@ -83,9 +81,8 @@ class Battle():
         Args:
             db_name (str): database's name.
         """
-        # Get the amount of available pokemons, and choose a random.
-        pokemon_amount = PokemonRepository(db_name).get_pokemon_amount()
-        random_pokemon2 = str(randint(1, pokemon_amount))
+        # Choose a random pokemon for the opponent.
+        random_pokemon2 = choice(PokemonRepository(db_name).get_pokemons_id_list())
 
         # Instantiate the opponent's pokemon and attacks.
         pokemon2 = Pokemon(*Pokemon.pokemon_definition(db_name, random_pokemon2))

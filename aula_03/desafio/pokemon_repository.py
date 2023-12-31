@@ -36,14 +36,6 @@ class PokemonRepository(DatabateRepository):
         query = "SELECT * FROM pokemons WHERE id = ?"
         pokemon = super().run_query_select_fetchone(query, id)
         return pokemon
-    
-    def get_pokemon_amount(self):
-        "Get the number of pokemons availables inthe database."
-        
-        """Get the amount of Pokemon in database"""
-        query = "SELECT COUNT(*) FROM pokemons"
-        pokemon_amount = super().run_query_select_fetchone(query)[0]
-        return pokemon_amount
 
     def get_pokemon_attacks_id(self, pokemon_id: int):
         """Get the attacks ID avaliable to a pokemon.

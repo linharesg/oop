@@ -24,12 +24,16 @@ if __name__ == "__main__":
 """
 Welcome back! Choose any option according to the list bellow: 
 1) Start a new battle!
-2) Statistics
+2) Statistics (Stay tuned! Available in the next update)
+
+Press any other key to exit the game.
 """)
         match option:
 
             case "1":
                 Battle.start_battle(database_name)
+            case "2":
+                input("Look out for this function in the upcoming release!")
             case _:
-                input("Invalid input! The game is now closing")
+                input("See you soon! The game is now closing.")
                 break

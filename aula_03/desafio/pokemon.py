@@ -78,7 +78,7 @@ class Pokemon():
             input_id = 0
         while not (input_id in PokemonRepository(db_name).get_pokemons_id_list()):
             try:
-                input_id = int(input("Choose an attack without cooldown according the list above!: "))
+                input_id = int(input("Choose a Pokemon according the list above!: "))
             except:
                 input_id = 0
         
