@@ -36,13 +36,7 @@ class Pokemon():
             db_name (str): name of the database.
             pokemon_id (str): pokemon's ID.
         """
-
-        while not Pokemon.validate_pokemon_input(pokemon_id, db_name):
-            pokemon_id = input("Input a valid pokemon ID according the list above!: ")
-
         pokemon_data = PokemonRepository(db_name).get_pokemon_by_id(pokemon_id)
-
-
         return pokemon_data
 
     @staticmethod
@@ -75,12 +69,20 @@ class Pokemon():
             print(f"{pokemon[0]}\t{pokemon[1]}")
     
     @staticmethod
-    def validate_pokemon_input(pokemon_id: str, db_name: str):
+    def validate_pokemon_input(db_name: str):
         """Verify if the pokemon's ID is valid"""
+        
         try:
-            return int(pokemon_id) in PokemonRepository(db_name).get_pokemons_id_list()
+            input_id = int(input("Choose you pokemon (by ID): "))
         except:
-            return 0
+            input_id = 0
+        while not (input_id in PokemonRepository(db_name).get_pokemons_id_list()):
+            try:
+                input_id = int(input("Choose an attack without cooldown according the list above!: "))
+            except:
+                input_id = 0
+        
+        return input_id
 
     def is_pokemon_defeated(self):
         "Check if the pokemon is defeated during a battle."
