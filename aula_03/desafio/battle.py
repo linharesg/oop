@@ -31,7 +31,7 @@ class Battle():
         return f"pokemon1: {self.pokemon1} | pokemon2: {self.pokemon2} | your atk: {self.your_attacks} | opp atk: {self.opponent_attacks} | total round: {self.opponent_attacks + self.your_attacks} | winner : {self.winner}"
     
     @staticmethod
-    def start_battle(db_name: str):
+    def start_battle(db_name: str) -> None:
         """Starts a battle between 2 pokemons (user and PC).
         
         Args:
@@ -75,7 +75,7 @@ class Battle():
         return pokemon1
     
     @staticmethod
-    def choose_pokemon_2(db_name: str):
+    def choose_pokemon_2(db_name: str) -> Pokemon:
         """Choose the opponent's pokemon.
         
         Args:
@@ -91,7 +91,7 @@ class Battle():
         print(f"Be ready, your opponent is a {pokemon2.name}!")
         return pokemon2 
 
-    def your_turn(self):
+    def your_turn(self) -> None:
         "Controls the sequence of commands in user's round."
 
         # Check if pokemon1 is defeated
@@ -112,7 +112,7 @@ class Battle():
         # Go to oppponent's round.
         self.opponent_turn()
 
-    def opponent_turn(self):
+    def opponent_turn(self) -> None:
         "Controls the sequence of commands in opponent's round."
 
         # Check if pokemon2 is defeated.
@@ -133,7 +133,7 @@ class Battle():
         # Go to user's round.
         self.your_turn()
 
-    def your_attack(self):
+    def your_attack(self) -> None:
         "Use an avaliable attack aaccording to the available ones, controling its cooldown"
 
         # Decrease the cooldown of the pokemon attacks.
@@ -178,7 +178,7 @@ class Battle():
         # Decrease the opponent's pokemon hp by the final calculated damage.
         self.pokemon2.recieve_damage(final_damage)
 
-    def opponent_atack(self):
+    def opponent_atack(self) -> None:
         "Choose randomly the opponent's attack according to the availables, controlling the cooldown."
 
         input("Be ready for your opponent's attack! Press enter to continue.")
