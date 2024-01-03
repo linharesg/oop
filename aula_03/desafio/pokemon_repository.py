@@ -26,7 +26,7 @@ class PokemonRepository(DatabateRepository):
         pokemon_id_list = super().run_query_select_fetchall(query)
         return [row[0] for row in pokemon_id_list]
 
-    def get_pokemon_by_id(self, id: int) -> str:
+    def get_pokemon_by_id(self, id: str) -> str:
         """Get the data of a pokemon by its ID
         
         Args:
@@ -37,17 +37,14 @@ class PokemonRepository(DatabateRepository):
         pokemon = super().run_query_select_fetchone(query, id)
         return pokemon
 
-    def get_pokemon_attacks_id(self, pokemon_id: int):
+    def get_pokemon_attacks_id(self, pokemon_id: str):
         """Get the attacks ID avaliable to a pokemon.
         
         Args:
-            pokemon_id (int): ID of the pokemon.
+            pokemon_id (str): ID of the pokemon.
         """
 
         query = "SELECT attack_id from pokemon_attacks where pokemon_id = ?"
-        avaliable_attacks = super().run_query_select_fetchall(query, str(pokemon_id))
-        attack_list = []
+        available_attacks = super().run_query_select_fetchall(query, pokemon_id)
 
-        for attack in avaliable_attacks:
-            attack_list.append(attack[0])
-        return attack_list
+        return [row[0] for row in available_attacks]

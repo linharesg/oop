@@ -45,16 +45,13 @@ class Pokemon():
         
         Args:
             db_name (str): name of the database.
-            pokemon_id (int): pokemon's ID.
+            pokemon_id (str): pokemon's ID.
         """
 
-        avaliable_attacks = []
         pokemon_attacks_id = PokemonRepository(db_name).get_pokemon_attacks_id(pokemon_id)
 
-        for attack in Attack.attacks_list:
-            if attack.id in pokemon_attacks_id:
-                avaliable_attacks.append(copy.deepcopy(attack))
-        return avaliable_attacks
+        return [attack for attack in Attack.attacks_list if attack.id in pokemon_attacks_id]
+
 
     @staticmethod
     def show_pokemon_list(db_name: str):
