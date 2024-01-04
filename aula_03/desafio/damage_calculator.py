@@ -24,8 +24,8 @@ class DamageCalculator:
         'Water': {'Fire': 1.8, 'Rock': 1.5, 'Ground': 1.2, 'Normal': 1.1},
     }
 
-
-    def calculate_damage(pokemon_type: str, attack_type: str, attack_raw_damage: int):
+    @staticmethod
+    def calculate_damage(pokemon_type: str, attack_type: str, attack_raw_damage: int) -> int:
         """Calculates the final damage based on the pokemon and attacks type
         
         Args:
@@ -38,7 +38,17 @@ class DamageCalculator:
         except:
             multiplier = 1
 
-        # Print different messages according the multiplier of the attack.
+        DamageCalculator.print_damage_effectiveness(multiplier)
+
+        return int(round(attack_raw_damage * multiplier, 0))
+    
+    def print_damage_effectiveness(multiplier: float) -> None:
+        """Print a message according the effectiveness od the attack
+        
+        Args:
+            multiplier (float): Multiplier apllied to the damage according the types (attack and pokemon)
+        """
+        
         if 1 < multiplier <= 1.2:
             print("The attack was quite effective!")
         elif 1.2 < multiplier < 1.7:
@@ -47,5 +57,5 @@ class DamageCalculator:
             print("Unbelievable! This attack was overwhelmingly effective, dealing massive damage!")
         elif multiplier < 1:
             print("Not very effective. The attack didn't have much impact.")
-
-        return round(attack_raw_damage * multiplier, 0)
+        
+        return
