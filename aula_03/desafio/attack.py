@@ -29,7 +29,7 @@ class Attack:
     def __repr__(self) -> str:
         return f"ID: {self.id} | name: {self.name} | type: {self.type} | power = {self.power} | cooldown = {self.cooldown} | current cooldown = {self.current_cooldown}\n" 
     
-
+    @staticmethod
     def attacks_definition(db_name: str) -> None:
         """Stores all the attacks of the database in a list
         

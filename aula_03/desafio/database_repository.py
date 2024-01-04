@@ -58,6 +58,7 @@ class DatabateRepository(ABC):
         connection.close()
         return rows
 
+    @staticmethod
     def check_database(db_name: str):
         """Check if there is some data in the tables of the game's database.
         

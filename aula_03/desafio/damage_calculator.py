@@ -1,5 +1,3 @@
-# from battle import Battle
-
 class DamageCalculator:
     "DamageCalculator is used to calculate the final damage, based on the attack and pokemon types."
 
@@ -42,6 +40,7 @@ class DamageCalculator:
 
         return int(round(attack_raw_damage * multiplier, 0))
     
+    @staticmethod
     def print_damage_effectiveness(multiplier: float) -> None:
         """Print a message according the effectiveness od the attack
         
