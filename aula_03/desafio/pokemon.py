@@ -3,6 +3,7 @@ from typing import List
 from pokemon_repository import PokemonRepository
 from attack import Attack
 from copy import deepcopy
+# from user import User
 
 class Pokemon():
     """This class represents a Pokemon
@@ -19,7 +20,7 @@ class Pokemon():
         self.name = name
         self.type = type
         self.hp = hp
-        self.attacks = []
+        # self.attacks = []
     
     def __str__(self):
         return f"ID: {self.id} | Name: {self.name} | Type: {self.type} | HP: {self.hp}"
@@ -74,6 +75,7 @@ class Pokemon():
         except:
             input_id = 0
         while not (input_id in PokemonRepository(db_name).get_pokemons_id_list()):
+        # while not (input_id in user.pokemons):
             try:
                 input_id = int(input("Choose a Pokemon according the list above!: "))
             except:

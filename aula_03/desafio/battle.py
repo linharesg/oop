@@ -1,9 +1,11 @@
 from pokemon import Pokemon
+from pokemon_player import PokemonPlayer
 from random import randint, choice
 from datetime import datetime
 from pokemon_repository import PokemonRepository
 from battle_repository import BattleRepository
 from damage_calculator import DamageCalculator
+from user import User
 
 
 class Battle():
@@ -19,7 +21,8 @@ class Battle():
     
     """
     
-    def __init__(self, pokemon1: Pokemon, pokemon2: Pokemon):
+    def __init__(self, user: str, pokemon1: PokemonPlayer, pokemon2: PokemonPlayer):
+        self.user = user
         self.pokemon1 = pokemon1
         self.pokemon2 = pokemon2
         self.your_attacks = 0
@@ -31,17 +34,19 @@ class Battle():
         return f"pokemon1: {self.pokemon1} | pokemon2: {self.pokemon2} | your atk: {self.your_attacks} | opp atk: {self.opponent_attacks} | total round: {self.opponent_attacks + self.your_attacks} | winner : {self.winner}"
     
     @staticmethod
-    def start_battle(db_name: str) -> None:
+    def start_battle(db_name: str, user: str) -> None:
         """Starts a battle between 2 pokemons (user and PC).
         
         Args:
             db_name (str): database's name.
         """
+        
+        
 
         # Define the pokemons and creates an object Battle
-        pokemon1 = Battle.choose_pokemon_1(db_name)
+        pokemon1 = Battle.choose_pokemon_1(db_name, user)
         pokemon2 = Battle.choose_pokemon_2(db_name)
-        current_battle = Battle(pokemon1, pokemon2)
+        current_battle = Battle(user, pokemon1, pokemon2)
 
         # Selects randomly who starts the battle
         if not current_battle.opponent_attacks and not current_battle.your_attacks:
@@ -56,7 +61,7 @@ class Battle():
         BattleRepository(db_name).load_battle_results(current_battle)
 
     @staticmethod
-    def choose_pokemon_1(db_name: str) -> Pokemon:
+    def choose_pokemon_1(db_name: str, user: User) -> Pokemon:
         """Choose the user's pokemon.
         
         Args:
@@ -64,14 +69,22 @@ class Battle():
         """    
         
         # Show the list of the available pokemons and ask for a input.
-        Pokemon.show_pokemon_list(db_name)
+        # Pokemon.show_pokemon_list(db_name)
+        # print(user.pokemons)
         input_pokemon1 = Pokemon.validate_pokemon_input(db_name)
 
+        for pokemon in user.pokemons:
+            if pokemon.id == input_pokemon1:
+                pokemon1 = pokemon
+                break
+
+
         # Instantiate the user's pokemon and attacks.
-        pokemon1 = Pokemon(*Pokemon.pokemon_definition(db_name, input_pokemon1))
-        pokemon1.attacks = Pokemon.set_pokemon_attacks(db_name, input_pokemon1)
+        # pokemon1 = PokemonPlayer(*Pokemon.pokemon_definition(db_name, input_pokemon1))
+        # pokemon1.attacks = Pokemon.set_pokemon_attacks(db_name, input_pokemon1)
 
         print(f"Well done! Your pokemon is {pokemon1.name}.")
+        print(f"poke: {pokemon1}.")
         return pokemon1
     
     @staticmethod
@@ -82,11 +95,12 @@ class Battle():
             db_name (str): database's name.
         """
         # Choose a random pokemon for the opponent.
-        random_pokemon2 = choice(PokemonRepository(db_name).get_pokemons_id_list())
+        # random_pokemon2 = choice(PokemonRepository(db_name).get_pokemons_id_list())
+        random_pokemon2 = "2"
 
         # Instantiate the opponent's pokemon and attacks.
-        pokemon2 = Pokemon(*Pokemon.pokemon_definition(db_name, random_pokemon2))
-        pokemon2.attacks = Pokemon.set_pokemon_attacks(db_name, random_pokemon2)
+        pokemon2 = PokemonPlayer(*Pokemon.pokemon_definition(db_name, random_pokemon2))
+        pokemon2.attacks = PokemonPlayer.set_pokemon_attacks(db_name, random_pokemon2)
         input("Press any key to randomly choose your opponent.\n")
         print(f"Be ready, your opponent is a {pokemon2.name}!")
         return pokemon2 
@@ -118,6 +132,7 @@ class Battle():
         # Check if pokemon2 is defeated.
         if self.pokemon2.is_pokemon_defeated():
             input(f"Your {self.pokemon1.name} did great, you won the battle. Congratulations!")
+            self.pokemon1.level += 1
             self.winner = "You"
             return
         
@@ -147,10 +162,10 @@ class Battle():
 
         # Print the attacks with its cooldown status.
         for num, attack in enumerate(self.pokemon1.attacks):
-            if attack.current_cooldown == 0:
+            if attack.current_cooldown == 0 and attack.level <= self.pokemon1.level:
                 avaliable_attacks[num + 1] = attack
-            print(f"{num + 1}\t{attack.name}\t\t cooldown: {attack.current_cooldown}/{attack.cooldown}")
-        
+            print(f"{num + 1}\t{attack.name}\t\t cooldown: {attack.current_cooldown}/{attack.cooldown}\t\t level: {self.pokemon1.level}/{attack.level}")
+            print(attack)
         # Ends the attack if all the attacks is  current with a colldown > 0.
         if not len(avaliable_attacks):
             input("Your pokemon is exhausted of attacking! Wait until the next round to a new attack without cooldown.")
