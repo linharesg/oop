@@ -2,7 +2,7 @@
 from typing import List
 from pokemon_repository import PokemonRepository
 from attack import Attack
-import copy
+from copy import deepcopy
 
 class Pokemon():
     """This class represents a Pokemon
@@ -50,7 +50,7 @@ class Pokemon():
 
         pokemon_attacks_id = PokemonRepository(db_name).get_pokemon_attacks_id(pokemon_id)
 
-        return [attack for attack in Attack.attacks_list if attack.id in pokemon_attacks_id]
+        return [deepcopy(attack) for attack in Attack.attacks_list if attack.id in pokemon_attacks_id]
 
 
     @staticmethod
