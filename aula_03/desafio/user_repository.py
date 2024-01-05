@@ -1,6 +1,7 @@
 from database_repository import DatabateRepository
 from pokemon_player import PokemonPlayer
 from pokemon import Pokemon
+# from battle import Battle
 
 class UserRepository(DatabateRepository):
 
@@ -18,4 +19,15 @@ class UserRepository(DatabateRepository):
 
         query = "SELECT id FROM users WHERE user = ?" 
         user_id = super().run_query_select_fetchone(query, user)
-        return user_id[0]   
+        return user_id[0]
+    
+    def update_pokemon_level(self, battle):
+        "Updates the level of the pokemon after a battle"
+        bt = str(battle.pokemon1.level)
+        print(bt)
+        pokemon1 = str(battle.pokemon1.id)
+        print(pokemon1)
+        user = str(battle.user.id)
+        print(user)
+        query = "UPDATE user_pokemon SET level = ? WHERE pokemon_id = ? and user_id = ?"
+        super().run_query(query, bt, pokemon1, user)

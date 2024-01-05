@@ -22,7 +22,4 @@ class User():
             self.pokemons.append(PokemonPlayer(*Pokemon.pokemon_definition(db_name, pokemon_data[1])))
             self.pokemons[num].level = pokemon_data[2]
             self.pokemons[num].attacks = Pokemon.set_pokemon_attacks(db_name, pokemon_data[1])
-            print(self.pokemons[num])
-
-        # print(user_pokemon_data)
         

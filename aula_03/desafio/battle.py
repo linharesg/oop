@@ -6,6 +6,8 @@ from pokemon_repository import PokemonRepository
 from battle_repository import BattleRepository
 from damage_calculator import DamageCalculator
 from user import User
+from attack import Attack
+from user_repository import UserRepository
 
 
 class Battle():
@@ -21,7 +23,8 @@ class Battle():
     
     """
     
-    def __init__(self, user: str, pokemon1: PokemonPlayer, pokemon2: PokemonPlayer):
+    def __init__(self, db_name, user: User, pokemon1: PokemonPlayer, pokemon2: PokemonPlayer):
+        self.db_name = db_name
         self.user = user
         self.pokemon1 = pokemon1
         self.pokemon2 = pokemon2
@@ -46,7 +49,7 @@ class Battle():
         # Define the pokemons and creates an object Battle
         pokemon1 = Battle.choose_pokemon_1(db_name, user)
         pokemon2 = Battle.choose_pokemon_2(db_name)
-        current_battle = Battle(user, pokemon1, pokemon2)
+        current_battle = Battle(db_name, user, pokemon1, pokemon2)
 
         # Selects randomly who starts the battle
         if not current_battle.opponent_attacks and not current_battle.your_attacks:
@@ -56,6 +59,9 @@ class Battle():
             else:
                 input("Your opponent start the battle. Press enter to continue.\n")
                 Battle.opponent_turn(current_battle)
+
+        Attack.reset_cooldown(current_battle.pokemon1.attacks)
+        Attack.reset_cooldown(current_battle.pokemon2.attacks)
 
         # Call a function to store de battle results, finishing it.
         BattleRepository(db_name).load_battle_results(current_battle)
@@ -77,14 +83,15 @@ class Battle():
             if pokemon.id == input_pokemon1:
                 pokemon1 = pokemon
                 break
-
+        
+        # pokemon1.attacks = Pokemon.set_pokemon_attacks(db_name, pokemon1.id)
 
         # Instantiate the user's pokemon and attacks.
         # pokemon1 = PokemonPlayer(*Pokemon.pokemon_definition(db_name, input_pokemon1))
         # pokemon1.attacks = Pokemon.set_pokemon_attacks(db_name, input_pokemon1)
 
         print(f"Well done! Your pokemon is {pokemon1.name}.")
-        print(f"poke: {pokemon1}.")
+        # print(f"poke: {pokemon1}.")
         return pokemon1
     
     @staticmethod
@@ -110,6 +117,7 @@ class Battle():
 
         # Check if pokemon1 is defeated
         if self.pokemon1.is_pokemon_defeated():
+            self.pokemon1.level -= 1
             input(f"Oh no! Unfortunately your {self.pokemon1.name} was defeated! Keep practicing to improve your battle skills!")
             self.winner = "Opponent"
             return
@@ -118,7 +126,7 @@ class Battle():
         self.your_attacks += 1
 
         # Prints the current hp
-        input(f"Your {self.pokemon1.name} is current with {self.pokemon1.hp} healh points.")
+        input(f"Your {self.pokemon1.name} is current with {self.pokemon1.hp}/{self.pokemon1.initial_hp} healh points.")
 
         # Call a method to choose the attack
         Battle.your_attack(self)
@@ -134,13 +142,14 @@ class Battle():
             input(f"Your {self.pokemon1.name} did great, you won the battle. Congratulations!")
             self.pokemon1.level += 1
             self.winner = "You"
+            UserRepository(self.db_name).update_pokemon_level(self)
             return
         
         # Increase the opponent's rounds by one.
         self.opponent_attacks += 1
 
         # Prints current status of the opponent's pokemon
-        print(f"Opponent's {self.pokemon2.name} is current with {self.pokemon2.hp} health points.")
+        print(f"Opponent's {self.pokemon2.name} is current with {self.pokemon2.hp}/{self.pokemon2.initial_hp} health points.")
         
         # Call a method to choose the attack
         Battle.opponent_atack(self)
@@ -161,6 +170,7 @@ class Battle():
         print("Choose your attack!")
 
         # Print the attacks with its cooldown status.
+        # print(f"level: {self.pokemon1.level}")
         for num, attack in enumerate(self.pokemon1.attacks):
             if attack.current_cooldown == 0 and attack.level <= self.pokemon1.level:
                 avaliable_attacks[num + 1] = attack

@@ -24,11 +24,11 @@ class Attack:
         self.cooldown = cooldown
         self.current_cooldown = 0
 
-    def __str__(self) -> str:
-        return f"ID: {self.id} | name: {self.name} | type: {self.type} | power = {self.power} | cooldown = {self.cooldown} | current cooldown = {self.current_cooldown} | level: {self.level}\n" 
+    # def __str__(self) -> str:
+    #     return f"ID: {self.id} | name: {self.name} | type: {self.type} | power = {self.power} | cooldown = {self.cooldown} | current cooldown = {self.current_cooldown} | level: {self.level}\n" 
 
-    def __repr__(self) -> str:
-        return f"ID: {self.id} | name: {self.name} | type: {self.type} | power = {self.power} | cooldown = {self.cooldown} | current cooldown = {self.current_cooldown} | level: {self.level}\n" 
+    # def __repr__(self) -> str:
+    #     return f"ID: {self.id} | name: {self.name} | type: {self.type} | power = {self.power} | cooldown = {self.cooldown} | current cooldown = {self.current_cooldown} | level: {self.level}\n" 
     
     @staticmethod
     def attacks_definition(db_name: str) -> None:
@@ -41,6 +41,17 @@ class Attack:
         for attack in attacks:
             Attack.attacks_list.append(Attack(*attack))
 
+    @staticmethod
+    def reset_cooldown(attacks: list):
+        """Reset the cooldown to 0
+        
+        Args:
+            attacks (list): List of attacks
+        """
+
+        for attack in attacks:
+            attack.current_cooldown = 0
+    
     def increase_cooldown(self):
         "Increases the attacks cooldown by one."
 

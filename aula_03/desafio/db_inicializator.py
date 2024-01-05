@@ -113,7 +113,8 @@ class DataBaseInitialize(DatabateRepository):
                 ('Flail', 'Normal', 7, 1, 1),
                 ('Thunder Shock', 'Electric', 10, 2, 1),
                 ('Quick Attack', 'Normal', 5, 1, 0),
-                ('Thunderbolt', 'Electric', 9, 2, 0);
+                ('Thunderbolt', 'Electric', 9, 2, 0),
+                ('NEWATK', 'Water', 9, 2, 3);
 
             INSERT INTO pokemon_attacks (attack_id, pokemon_id) VALUES 
                 (1, 1),
@@ -142,7 +143,8 @@ class DataBaseInitialize(DatabateRepository):
                 (19, 9),
                 (20, 7),
                 (20, 9),
-                (21, 9);
+                (21, 9),
+                (22, 4);
                              
             INSERT INTO users (user, email, password) VALUES
                 ('gabriel.sl', 'gabriel@email.com', '1234'),
