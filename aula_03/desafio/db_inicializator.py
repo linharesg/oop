@@ -2,6 +2,8 @@ import sqlite3
 from database_repository import DatabateRepository
 from requests import get
 from bs4 import BeautifulSoup
+import re
+
 class DataBaseInitialize(DatabateRepository):
     """Class that starts the database, creating the tables."""
 
@@ -212,7 +214,7 @@ class DataBaseInitialize(DatabateRepository):
     def get_pokemon_attacks_from_url():
 
         url_moves = "https://pokemondb.net/move/generation/1"
-        response_moves = requests.get(url_moves)
+        response_moves = get(url_moves)
         soup_moves = BeautifulSoup(response_moves.content, "html.parser")
 
         table = soup_moves.find_all("table")[0]
@@ -231,7 +233,7 @@ class DataBaseInitialize(DatabateRepository):
                 # move_pp = cells[5].text.strip()
                 url_attack = "https://pokemondb.net" + cells[0].contents[0].attrs['href']
 
-                response_pokemon = requests.get(url_attack)
+                response_pokemon = get(url_attack)
                 soup_pokemon = BeautifulSoup(response_pokemon.content, "html.parser")
                 
                 nav_bar = soup_pokemon.find_all(class_="panel-nav")[0]
