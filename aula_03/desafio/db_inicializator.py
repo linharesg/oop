@@ -36,7 +36,8 @@ class DataBaseInitialize(DatabateRepository):
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT UNIQUE NOT NULL,
                 type TEXT NOT NULL,
-                power INT NOT NULL,
+                power INT DEFAULT 0,
+                accuracy INT DEFAULT 0,
                 cooldown INT NOT NULL
             );
 
@@ -87,59 +88,9 @@ class DataBaseInitialize(DatabateRepository):
             
             {DataBaseInitialize.get_pokemon_from_url()}
             
-            INSERT INTO attacks (name, type, power, cooldown, level) VALUES 
-                ('Tackle', 'Normal', 5, 1, 1),
-                ('Vine Whip', 'Grass', 15, 3, 0),
-                ('Poison Powder', 'Poison', 5, 1, 2),
-                ('Scratch', 'Normal', 4, 0, 3),
-                ('Ember', 'Fire', 3, 2, 1),
-                ('Dragon Rage', 'Fire', 6, 1, 0),
-                ('Water Gun', 'Water', 8, 1, 0),
-                ('Withdraw', 'Water', 5, 0, 1),
-                ('String Shot', 'Bug', 13, 2, 1),
-                ('Bug Bite', 'Bug', 12, 3, 0),
-                ('Gust', 'Flying', 4, 0, 2),
-                ('Mirror Move', 'Flying', 5, 0, 1),
-                ('Confusion', 'Psychic', 12, 3, 1),
-                ('Hydro Pump', 'Water', 7, 2, 0),
-                ('Pay Day', 'Normal', 4, 1, 1),
-                ('Bite', 'Dark', 6, 1, 0),
-                ('Splash', 'Water', 10, 3, 1),
-                ('Flail', 'Normal', 7, 1, 1),
-                ('Thunder Shock', 'Electric', 10, 2, 1),
-                ('Quick Attack', 'Normal', 5, 1, 0),
-                ('Thunderbolt', 'Electric', 9, 2, 0),
-                ('NEWATK', 'Water', 9, 2, 3);
-
-            INSERT INTO pokemon_attacks (attack_id, pokemon_id) VALUES 
-                (1, 1),
-                (1, 3),
-                (1, 8),
-                (1, 5),
-                (2, 1),
-                (3, 1),
-                (4, 2),
-                (4, 6),
-                (5, 2),
-                (6, 2),
-                (7, 3),
-                (7, 4),
-                (8, 3),
-                (9, 8),
-                (10, 8),
-                (11, 7),
-                (12, 7),
-                (13, 4),
-                (14, 4),
-                (15, 6),
-                (16, 6),
-                (17, 5),
-                (18, 5),
-                (19, 9),
-                (20, 7),
-                (20, 9),
-                (21, 9),
-                (22, 4);
+            {DataBaseInitialize.get_attacks_from_url()}
+            
+            {DataBaseInitialize.get_pokemon_attacks_from_url()}
                              
             INSERT INTO users (user, email, password) VALUES
                 ('gabriel.sl', 'gabriel@email.com', '1234'),
@@ -157,8 +108,6 @@ class DataBaseInitialize(DatabateRepository):
             
             """)
         
-
-
     def get_pokemon_from_url():
         
         url = "https://pokemondb.net/pokedex/all"
@@ -184,7 +133,7 @@ class DataBaseInitialize(DatabateRepository):
             if id not in dictionary.keys():
 
                 # Find Name
-                name = row_td[1].text
+                name = re.sub(r'\s+', ' ', row_td[1].text)
 
                 # Find types
                 # types = []
@@ -192,7 +141,7 @@ class DataBaseInitialize(DatabateRepository):
                 # for type in types_html:
                 #     types.append(type.text)
                 type = row_td[2].find_all("a")[0].text
-                
+                # print(f"pokemon: {name}")
                 #Find HP
                 hp = int(row_td[4].text)
                 
@@ -206,9 +155,9 @@ class DataBaseInitialize(DatabateRepository):
             types = value['types']
             hp = value['hp']
             
-            query += f"({id}, '{name}', '{types}', {hp}), "
+            query += f"({id}, '{name}', '{types}', {hp}),\n"
 
-        query = f"{query[0:-2]};"
+        query = f"{query[0:-2]};"        
         return query
     
     def get_pokemon_attacks_from_url():
@@ -225,8 +174,8 @@ class DataBaseInitialize(DatabateRepository):
         for index_attack, row in enumerate(rows[1:]):
             cells = row.find_all("td")
             if len(cells) > 0:
-                move_name = cells[0].text.strip()
-                print(move_name)
+                # move_name = cells[0].text.strip()
+                # print(move_name)
                 # dict[index_attack + 1] = []
                 # move_type = cells[1].text.strip()
                 # move_power = cells[3].text.strip()
@@ -273,5 +222,55 @@ class DataBaseInitialize(DatabateRepository):
                 query += f"({attack_id}, {pokemon_id}, {level}), \n"
 
         query = f"{query[0:-3]};"
+        return query
+    
+    def get_attacks_from_url():
+        with open("move_list.html", "r", encoding="utf-8") as file:
+            html_content = file.read()
 
+        url_moves = "https://pokemondb.net/move/generation/1"
+        response_moves = get(url_moves)
+        # soup_moves = BeautifulSoup(html_content, "html.parser")
+        soup_moves = BeautifulSoup(response_moves.content, "html.parser")
+
+        table = soup_moves.find_all("table")[0]
+        rows = table.find_all("tr")
+
+        # moves_dict = {}
+        query = "INSERT INTO attacks (id, name, type, power, accuracy, cooldown) VALUES "
+
+        for index_attack, row in enumerate(rows[1:]):
+            cells = row.find_all("td")
+            if len(cells) > 0:
+                try:
+                    move_power = int(cells[3].text.strip())
+                except:
+                    move_power = 0
+                move_name = re.sub(r'\s+', ' ', cells[0].text.strip().replace("\n", " "))
+                try:
+                    move_accuracy = int(cells[4].text.strip())
+                except:
+                    move_accuracy = 0
+                move_type = cells[1].text.strip()
+
+                if move_power >= 200:
+                    cooldown = 8
+                elif move_power >= 150:
+                    cooldown = 6
+                elif move_power >= 100:
+                    cooldown = 5
+                elif move_power >= 80:
+                    cooldown = 4
+                elif move_power >= 50:
+                    cooldown = 3
+                elif move_power >= 40:
+                    cooldown = 2
+                elif move_power >= 30:
+                    cooldown = 1
+                else:
+                    cooldown = 0
+
+            query += (f"({index_attack + 1}, '{move_name}', '{move_type}', {move_power}, {move_accuracy}, {cooldown}),\n")
+
+        query = query[0:-2] + ";"
         return query
