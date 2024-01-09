@@ -39,7 +39,8 @@ Press any other key to exit the game.
                 input("Look out for this function in the upcoming release!")
             case "3":
                 # user_input = input("Input your user: ")
-                user_input = "gabriel.sl"
+                # user_input = "gabriel.sl"
+                user_input = "amanda.bv"
                 user_id = UserRepository(database_name).get_user_id(user_input)
                 current_user = User(user_id)
                 

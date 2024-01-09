@@ -47,3 +47,4 @@ class PokemonPlayer(Pokemon):
                     attacks[-1].level = pokemon_attack[1]
                     break
         return attacks
+    
