@@ -52,22 +52,7 @@ class Pokemon():
         for pokemon in pokemon_list:
             print(f"{pokemon[0]}\t{pokemon[1]}")
     
-    @staticmethod
-    def validate_pokemon_input(db_name: str):
-        """Verify if the pokemon's ID is valid"""
-        
-        try:
-            input_id = int(input("Choose you pokemon (by ID): "))
-        except:
-            input_id = 0
-        while not (input_id in PokemonRepository(db_name).get_pokemons_id_list()):
-        # while not (input_id in user.pokemons):
-            try:
-                input_id = int(input("Choose a Pokemon according the list above!: "))
-            except:
-                input_id = 0
-        
-        return input_id
+
 
     def is_pokemon_defeated(self):
         "Check if the pokemon is defeated during a battle."

@@ -23,3 +23,18 @@ class User():
             self.pokemons[index].level = pokemon_data[2]
             self.pokemons[index].attacks = PokemonPlayer.set_pokemon_attacks(db_name, pokemon_data[1])
         
+    @staticmethod
+    def validate_pokemon_input(self):
+        """Verify if the pokemon's ID is valid"""
+        
+        while True:
+            try:
+                input_id = int(input("Choose you pokemon (by ID): "))
+                for pokemon in self.pokemons:
+                    if input_id == pokemon.id:
+                        return pokemon
+            except:
+                continue
+
+
+        

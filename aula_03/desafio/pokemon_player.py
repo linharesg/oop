@@ -12,10 +12,10 @@ class PokemonPlayer(Pokemon):
         self.attacks = []
 
     def __str__(self):
-        return f"ID: {self.id} | Name: {self.name} | Type: {self.type} | HP: {self.hp} | current hp: {self.initial_hp} | level: {self.level} \n Attacks : {self.attacks}"
+        return f"ID: {self.id} | Name: {self.name} | Type: {self.type} | HP: {self.hp} | level: {self.level}"
     
     def __repr__(self) -> str:
-        return f"ID: {self.id} | Name: {self.name} | Type: {self.type} | HP: {self.hp} | current hp: {self.initial_hp} | level: {self.level}"
+        return f"ID: {self.id} | Name: {self.name} | Type: {self.type} | HP: {self.hp} | level: {self.level}"
     
     
     def reset_hp(self):
