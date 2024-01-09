@@ -41,20 +41,6 @@ class Pokemon():
         return pokemon_data
 
     @staticmethod
-    def set_pokemon_attacks(db_name: str, pokemon_id: str):
-        """Set the pokemon's attacks by the available attaks in database.
-        
-        Args:
-            db_name (str): name of the database.
-            pokemon_id (str): pokemon's ID.
-        """
-
-        pokemon_attacks_id = PokemonRepository(db_name).get_pokemon_attacks_id(pokemon_id)
-
-        return [deepcopy(attack) for attack in Attack.attacks_list if attack.id in pokemon_attacks_id]
-
-
-    @staticmethod
     def show_pokemon_list(db_name: str):
         """Prints a list of the pokemon available in database.
         

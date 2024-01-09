@@ -1,5 +1,7 @@
 from pokemon import Pokemon
-
+from pokemon_repository import PokemonRepository
+from attack import Attack
+from copy import deepcopy
 class PokemonPlayer(Pokemon):
 
     def __init__(self, id: int,  name: str, type: str, hp: int):
@@ -20,3 +22,28 @@ class PokemonPlayer(Pokemon):
         "Reset the health points after finishing a battle"
 
         self.hp = self.initial_hp
+    
+    @staticmethod
+    def set_pokemon_attacks(db_name: str, pokemon_id: str):
+        """Set the pokemon's attacks by the available attaks in database.
+        
+        Args:
+            db_name (str): name of the database.
+            pokemon_id (str): pokemon's ID.
+        """
+
+        pokemon_attacks_id = PokemonRepository(db_name).get_pokemon_attacks_id(pokemon_id)
+
+        attacks =[]
+        
+        for index, pokemon_attack in enumerate(pokemon_attacks_id):
+            
+            for attack in Attack.attacks_list:
+                # print(attack)
+                # print(index)
+                # print(pokemon_attack)
+                if attack.id == pokemon_attack[0] and attack.power != 0:
+                    attacks.append(deepcopy(attack))
+                    attacks[-1].level = pokemon_attack[1]
+                    break
+        return attacks

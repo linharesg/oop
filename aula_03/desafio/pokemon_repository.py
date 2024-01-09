@@ -44,7 +44,9 @@ class PokemonRepository(DatabateRepository):
             pokemon_id (str): ID of the pokemon.
         """
 
-        query = "SELECT attack_id from pokemon_attacks where pokemon_id = ?"
+        # query = "SELECT attack_id from pokemon_attacks where pokemon_id = ?"
+        query = "SELECT attack_id, level from pokemon_attacks where pokemon_id = ?"
         available_attacks = super().run_query_select_fetchall(query, pokemon_id)
 
-        return [row[0] for row in available_attacks]
+        return available_attacks
+    

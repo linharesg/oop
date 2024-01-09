@@ -62,6 +62,8 @@ class Battle():
 
         Attack.reset_cooldown(current_battle.pokemon1.attacks)
         Attack.reset_cooldown(current_battle.pokemon2.attacks)
+        PokemonPlayer.reset_hp(pokemon1)
+        PokemonPlayer.reset_hp(pokemon2)
 
         # Call a function to store de battle results, finishing it.
         BattleRepository(db_name).load_battle_results(current_battle)
@@ -117,7 +119,9 @@ class Battle():
 
         # Check if pokemon1 is defeated
         if self.pokemon1.is_pokemon_defeated():
-            self.pokemon1.level -= 1
+            if self.pokemon1.level:
+                self.pokemon1.level -= 1
+                UserRepository(self.db_name).update_pokemon_level(self)
             input(f"Oh no! Unfortunately your {self.pokemon1.name} was defeated! Keep practicing to improve your battle skills!")
             self.winner = "Opponent"
             return
@@ -166,16 +170,19 @@ class Battle():
 
         # Create an empty dictionary to stores the pokemon's available attacks (without cooldown).
         avaliable_attacks = {}
+        avaliable_attacks_counter = 0
 
         print("Choose your attack!")
-
         # Print the attacks with its cooldown status.
-        # print(f"level: {self.pokemon1.level}")
         for num, attack in enumerate(self.pokemon1.attacks):
-            if attack.current_cooldown == 0 and attack.level <= self.pokemon1.level:
-                avaliable_attacks[num + 1] = attack
-            print(f"{num + 1}\t{attack.name}\t\t cooldown: {attack.current_cooldown}/{attack.cooldown}\t\t level: {self.pokemon1.level}/{attack.level}")
-            print(attack)
+            if attack.level > self.pokemon1.level:
+                continue
+            avaliable_attacks_counter += 1
+            if attack.current_cooldown == 0:
+                avaliable_attacks[avaliable_attacks_counter] = attack
+            print(f"{avaliable_attacks_counter}\t{attack.name}\t\t cooldown: {attack.current_cooldown}/{attack.cooldown}\t\t level: {self.pokemon1.level}/{attack.level}")
+            
+
         # Ends the attack if all the attacks is  current with a colldown > 0.
         if not len(avaliable_attacks):
             input("Your pokemon is exhausted of attacking! Wait until the next round to a new attack without cooldown.")
@@ -183,22 +190,24 @@ class Battle():
 
         # Input the user's attack, accepting only available attacks.
         try:
-            chosen_attack = int(input("Choose you attack: "))
+            attack_input = int(input("Choose you attack: "))
         except:
-            chosen_attack = 0
-        while not (chosen_attack in avaliable_attacks.keys()):
+            attack_input = 0
+        while not (attack_input in avaliable_attacks.keys()):
             try:
-                chosen_attack = int(input("Choose an attack without cooldown according the list above!: "))
+                attack_input = int(input("Choose an attack without cooldown according the list above!: "))
             except:
-                chosen_attack = 0
+                attack_input = 0
         
+        
+        chosen_attack = avaliable_attacks.get(attack_input)
         # Increase the chosen attack by one.
-        self.pokemon1.attacks[chosen_attack -1].increase_cooldown()
+        chosen_attack.increase_cooldown()
 
         # Calculate the raw damage and final damage based on the pokemon and attack type.
-        attack_raw_damage = self.pokemon1.attacks[chosen_attack -1].power
-        input(f"(You): {self.pokemon1.name}, use {self.pokemon1.attacks[chosen_attack -1].name}!\n")
-        final_damage = DamageCalculator.calculate_damage(self.pokemon2.type, self.pokemon1.attacks[chosen_attack -1].type, attack_raw_damage)
+        attack_raw_damage = chosen_attack.power
+        input(f"(You): {self.pokemon1.name}, use {chosen_attack.name}!\n")
+        final_damage = DamageCalculator.calculate_damage(self.pokemon2.type, chosen_attack.type, attack_raw_damage)
         
         # Decrease the opponent's pokemon hp by the final calculated damage.
         self.pokemon2.recieve_damage(final_damage)
