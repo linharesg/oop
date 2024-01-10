@@ -45,7 +45,7 @@ class Battle():
         """
         
         # Define the pokemons and creates an object Battle
-        pokemon1 = Battle.choose_pokemon_1(db_name, user)
+        pokemon1 = Battle.choose_pokemon_1(user)
         current_battle = Battle(db_name, user, pokemon1)
         current_battle.pokemon2 = Battle.choose_pokemon_2(current_battle)
 

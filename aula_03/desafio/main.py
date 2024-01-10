@@ -28,6 +28,7 @@ Welcome back! Choose any option according to the list bellow:
 1) Start a new battle!
 2) Statistics (Stay tuned! Available in the next update)
 3) Login
+4) New account
 
 Press any other key to exit the game.
 """)
@@ -45,6 +46,13 @@ Press any other key to exit the game.
                 current_user = User(user_id)
                 
                 User.set_user_pokemons(current_user, database_name)
+            
+            case "4":
+                new_user_id = str(UserRepository(database_name).create_new_user())
+                current_user = User(new_user_id)
+                input(f" Welcome, {current_user.id}! Press any key to go to the main menu")
+                User.set_user_pokemons(current_user, database_name)
+
             case _:
                 input("See you soon! The game is now closing.")
                 break
