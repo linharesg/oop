@@ -4,6 +4,30 @@ from attack import Attack
 from user import User
 from user_repository import UserRepository
 
+def main_menu(user):
+        
+        while True:
+            
+            option = input("""
+Welcome back! Choose any option according to the list bellow: 
+1) Start a new battle!
+2) Statistics (Stay tuned! Available in the next update
+3) Logout\n""")
+
+            match option:
+                case "1":
+                    Battle.start_battle(database_name, user)
+                
+                case "2":
+                    input("Look out for this function in the upcoming release!")
+
+                case "3":
+                    break
+
+                case _:
+                    input("Invalid input! Press any key to return to the menu")
+
+
 if __name__ == "__main__":
 
     #Defining the database name
@@ -20,39 +44,43 @@ if __name__ == "__main__":
     # Create objects for each Attack
     Attack.attacks_definition(database_name)
     
+    
     # Start the game by printing the initial Menu, where the user can choose the options.
     while True:
         option = input(
 """
 Welcome back! Choose any option according to the list bellow: 
-1) Start a new battle!
-2) Statistics (Stay tuned! Available in the next update)
-3) Login
-4) New account
-
-Press any other key to exit the game.
-""")
+1) Login
+2) Create new account
+3) Exit game\n""")
         match option:
 
             case "1":
-                Battle.start_battle(database_name, current_user)
-            case "2":
-                input("Look out for this function in the upcoming release!")
-            case "3":
-                # user_input = input("Input your user: ")
-                # user_input = "gabriel.sl"
-                user_input = "amanda.bv"
-                user_id = UserRepository(database_name).get_user_id(user_input)
-                current_user = User(user_id)
-                
-                User.set_user_pokemons(current_user, database_name)
-            
-            case "4":
-                new_user_id = str(UserRepository(database_name).create_new_user())
-                current_user = User(new_user_id)
-                input(f" Welcome, {current_user.id}! Press any key to go to the main menu")
-                User.set_user_pokemons(current_user, database_name)
 
-            case _:
+                # user_input = "amanda.bv"
+                user_input = input("Your user: ")
+                
+                # ask for password nad validate
+
+                user_id = UserRepository(database_name).get_user_id(user_input)
+                current_user = User.set_new_user(database_name, user_id)
+                
+                input(f"\nWelcome back, {current_user.user}! Press any key to go to the main menu.")
+                
+                main_menu(current_user)
+
+            case "2":
+
+                new_user_id = UserRepository(database_name).create_new_user()
+                current_user = User.set_new_user(database_name, new_user_id)
+
+                input(f" Welcome, {current_user.user}! Press any key to go to the main menu")
+                main_menu(current_user)
+
+            case "3":
                 input("See you soon! The game is now closing.")
                 break
+
+            case _:
+                input("Invalid input! Press any key to return to the login menu.")
+                continue

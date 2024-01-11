@@ -6,8 +6,10 @@ from pokemon_player import PokemonPlayer
 
 class User():
 
-    def __init__(self, id: str):
+    def __init__(self, id: str, user: str, email: str):
         self.id = id
+        self.user = user
+        self.email = email
         self.pokemons = []
 
     def __str__(self) -> str:
@@ -36,6 +38,10 @@ class User():
             except:
                 continue
 
-
-
+    def set_new_user(db_name, user_id):
         
+        user_data = UserRepository(db_name).get_user_data(user_id)
+        current_user = User(*user_data)
+        User.set_user_pokemons(current_user, db_name)
+        
+        return current_user

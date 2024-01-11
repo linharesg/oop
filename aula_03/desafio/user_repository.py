@@ -37,11 +37,6 @@ class UserRepository(DatabateRepository):
         email = input("Informe your email: ")
         password = input("inform your password: ")
 
-        #validation
-        
-        # new_id = UserRepository.get_last_user_id()
-
-
         new_id = self.get_last_user_id()[0] + 1
 
         query = "INSERT INTO users (id, user, email, password) VALUES (?, ?, ?, ?)"
@@ -66,17 +61,17 @@ class UserRepository(DatabateRepository):
         (?, 1, 1),
         (?, 4, 1),
         (?, 7, 1),
-        (?, 10, 1),
-        (?, 16, 1),
-        (?, 19, 1),
-        (?, 25, 1),
-        (?, 52, 1),
-        (?, 66, 1),
-        (?, 129, 1);
+        (?, 25, 1);
         """
         args_query = []
-        TOTAL_POKEMONS = 10
+        TOTAL_POKEMONS = 4
         for i in range(0, TOTAL_POKEMONS):
             args_query.append(user_id)
 
         super().run_query(query, *args_query)
+
+    def get_user_data(self, user):
+
+        query = "SELECT id, user, email FROM users WHERE id = ?" 
+        user_data = super().run_query_select_fetchone(query, user)
+        return user_data

@@ -43,7 +43,7 @@ class Battle():
         Args:
             db_name (str): database's name.
         """
-        
+        print("Choose your Pokemon!\n")
         # Define the pokemons and creates an object Battle
         pokemon1 = Battle.choose_pokemon_1(user)
         current_battle = Battle(db_name, user, pokemon1)
@@ -236,5 +236,4 @@ class Battle():
         input(f"(Opponent): {self.pokemon2.name}, use {chosen_attack.name}!\n")
         final_damage = DamageCalculator.calculate_damage(self.pokemon1.type, chosen_attack.type, attack_raw_damage)
         self.pokemon1.recieve_damage(final_damage)
-
 

@@ -36,12 +36,10 @@ class PokemonPlayer(Pokemon):
 
         attacks =[]
         
-        for index, pokemon_attack in enumerate(pokemon_attacks_id):
+        for pokemon_attack in pokemon_attacks_id:
             
             for attack in Attack.attacks_list:
-                # print(attack)
-                # print(index)
-                # print(pokemon_attack)
+
                 if attack.id == pokemon_attack[0] and attack.power != 0:
                     attacks.append(deepcopy(attack))
                     attacks[-1].level = pokemon_attack[1]
