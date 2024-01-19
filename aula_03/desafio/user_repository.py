@@ -1,6 +1,5 @@
 from database_repository import DatabateRepository
-from pokemon_player import PokemonPlayer
-from pokemon import Pokemon
+
 # from battle import Battle
 
 class UserRepository(DatabateRepository):

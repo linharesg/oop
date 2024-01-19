@@ -37,7 +37,7 @@ class PokemonRepository(DatabateRepository):
         pokemon = super().run_query_select_fetchone(query, id)
         return pokemon
 
-    def get_pokemon_attacks_id(self, pokemon_id: str):
+    def get_pokemon_attacks_by_id(self, pokemon_id: str):
         """Get the attacks ID avaliable to a pokemon.
         
         Args:
@@ -50,3 +50,10 @@ class PokemonRepository(DatabateRepository):
 
         return available_attacks
     
+    def get_pokemons(self):
+        "Returns all the pokemons of the database"
+        
+        query = """
+        SELECT  id, name, type, hp
+        FROM pokemons"""
+        return super().run_query_select_fetchall(query)

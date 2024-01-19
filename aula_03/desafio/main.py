@@ -3,6 +3,7 @@ from battle import Battle
 from attack import Attack
 from user import User
 from user_repository import UserRepository
+from pokemon import Pokemon
 
 def main_menu(user):
         
@@ -43,9 +44,10 @@ if __name__ == "__main__":
 
     # Create objects for each Attack
     Attack.attacks_definition(database_name)
+    Pokemon.all_pokemon_definition(database_name)
+    Pokemon.set_pokemons_attacks(database_name)
     
-    
-    # Start the game by printing the initial Menu, where the user can choose the options.
+    # Prints the login menu
     while True:
         option = input(
 """
@@ -57,22 +59,18 @@ Welcome back! Choose any option according to the list bellow:
 
             case "1":
 
-                # user_input = "amanda.bv"
                 user_input = input("Your user: ")
-                
-                # ask for password nad validate
-
                 user_id = UserRepository(database_name).get_user_id(user_input)
-                current_user = User.set_new_user(database_name, user_id)
+                current_user = User.set_user(database_name, user_id)
                 
                 input(f"\nWelcome back, {current_user.user}! Press any key to go to the main menu.")
-                
+
                 main_menu(current_user)
 
             case "2":
 
                 new_user_id = UserRepository(database_name).create_new_user()
-                current_user = User.set_new_user(database_name, new_user_id)
+                current_user = User.set_user(database_name, new_user_id)
 
                 input(f" Welcome, {current_user.user}! Press any key to go to the main menu")
                 main_menu(current_user)

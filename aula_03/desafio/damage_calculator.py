@@ -15,7 +15,7 @@ class DamageCalculator(ABC):
             attack_raw_damage (int): The raw damage caused by the attack.
         """
 
-        multiplier = DamageCalculator.multipliers.get(attack_type).get(pokemon_type, 1)
+        multiplier = DamageCalculator.multipliers.get(attack_type, 1).get(pokemon_type, 1)
 
         DamageCalculator.print_damage_effectiveness(multiplier)
 

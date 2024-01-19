@@ -13,9 +13,6 @@ class AttackRepository(DatabateRepository):
     def get_attacks(self):
         "Returns all the attacks of the database"
         
-        # query = """
-        # SELECT attacks.* 
-        # FROM attacks"""
         query = """
         SELECT  id, name, type, power, cooldown
         FROM attacks"""

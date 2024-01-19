@@ -1,6 +1,5 @@
-from random import randint
 from attack_repository import AttackRepository
-from typing import List
+
 class Attack:
     """Represent the pokemon's attacks.
 
@@ -8,6 +7,7 @@ class Attack:
         id (int): Attack's ID.
         name (str): Attack's name.
         type (str): Attack's type.
+        level (int): Required level to use the attack.
         power (int): Power of the attack (raw damage, independent of type).
         cooldown (int): Number of rounds that must wait until use the same attack again in a battle.
         current_cooldown (int): Number of round that's already gone since the last use of the attack.    
