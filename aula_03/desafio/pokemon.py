@@ -33,28 +33,28 @@ class Pokemon():
         return f"ID: {self.id} | Name: {self.name} | Type: {self.type} | HP: {self.hp} | level: {self.level}\n"
 
 
-    @staticmethod
-    def pokemon_definition(db_name: str, pokemon_id: str):
-        """Returns data of the Pokemon according to the pokemon's ID inputed
+    # @staticmethod
+    # def pokemon_definition(db_name: str, pokemon_id: str):
+    #     """Returns data of the Pokemon according to the pokemon's ID inputed
         
-        Args:
-            db_name (str): name of the database.
-            pokemon_id (str): pokemon's ID.
-        """
-        pokemon_data = PokemonRepository(db_name).get_pokemon_by_id(pokemon_id)
-        return pokemon_data
+    #     Args:
+    #         db_name (str): name of the database.
+    #         pokemon_id (str): pokemon's ID.
+    #     """
+    #     pokemon_data = PokemonRepository(db_name).get_pokemon_by_id(pokemon_id)
+    #     return pokemon_data
 
-    @staticmethod
-    def show_pokemon_list(db_name: str):
-        """Prints a list of the pokemon available in database.
+    # @staticmethod
+    # def show_pokemon_list(db_name: str):
+    #     """Prints a list of the pokemon available in database.
         
-        Args:
-            db_name (str): name of the database.
-        """
-        pokemon_list = PokemonRepository(db_name).get_pokemons_list()
-        print("Choose your Pokemon!")
-        for pokemon in pokemon_list:
-            print(f"{pokemon[0]}\t{pokemon[1]}")
+    #     Args:
+    #         db_name (str): name of the database.
+    #     """
+    #     pokemon_list = PokemonRepository(db_name).get_pokemons_list()
+    #     print("Choose your Pokemon!")
+    #     for pokemon in pokemon_list:
+    #         print(f"{pokemon[0]}\t{pokemon[1]}")
     
     def is_pokemon_defeated(self):
         "Check if the pokemon is defeated during a battle."
@@ -117,25 +117,25 @@ class Pokemon():
     def reset_hp(self):
         self.hp = self.initial_hp
 
-    @staticmethod
-    def set_pokemon_attacks(db_name: str, pokemon_id: str):
-        """Set the pokemon's attacks by the available attaks in database.
+    # @staticmethod
+    # def set_pokemon_attacks(db_name: str, pokemon_id: str):
+    #     """Set the pokemon's attacks by the available attaks in database.
         
-        Args:
-            db_name (str): name of the database.
-            pokemon_id (str): pokemon's ID.
-        """
+    #     Args:
+    #         db_name (str): name of the database.
+    #         pokemon_id (str): pokemon's ID.
+    #     """
 
-        pokemon_attacks_id = PokemonRepository(db_name).get_pokemon_attacks_id(pokemon_id)
+    #     pokemon_attacks_id = PokemonRepository(db_name).get_pokemon_attacks_id(pokemon_id)
 
-        attacks =[]
+    #     attacks =[]
         
-        for pokemon_attack in pokemon_attacks_id:
+    #     for pokemon_attack in pokemon_attacks_id:
             
-            for attack in Attack.attacks_list:
+    #         for attack in Attack.attacks_list:
 
-                if attack.id == pokemon_attack[0] and attack.power != 0:
-                    attacks.append(deepcopy(attack))
-                    attacks[-1].level = pokemon_attack[1]
-                    break
-        return attacks
+    #             if attack.id == pokemon_attack[0] and attack.power != 0:
+    #                 attacks.append(deepcopy(attack))
+    #                 attacks[-1].level = pokemon_attack[1]
+    #                 break
+    #     return attacks
